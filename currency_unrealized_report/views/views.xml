@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="currency_unrealized_report.list">
+      <field name="name">currency_unrealized_report list</field>
+      <field name="model">currency_unrealized_report.currency_unrealized_report</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="currency_unrealized_report.action_window">
+      <field name="name">currency_unrealized_report window</field>
+      <field name="res_model">currency_unrealized_report.currency_unrealized_report</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="currency_unrealized_report.action_server">
+      <field name="name">currency_unrealized_report server</field>
+      <field name="model_id" ref="model_currency_unrealized_report_currency_unrealized_report"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="currency_unrealized_report" id="currency_unrealized_report.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="currency_unrealized_report.menu_1" parent="currency_unrealized_report.menu_root"/>
+    <menuitem name="Menu 2" id="currency_unrealized_report.menu_2" parent="currency_unrealized_report.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="currency_unrealized_report.menu_1_list" parent="currency_unrealized_report.menu_1"
+              action="currency_unrealized_report.action_window"/>
+    <menuitem name="Server to list" id="currency_unrealized_report" parent="currency_unrealized_report.menu_2"
+              action="currency_unrealized_report.action_server"/>
+-->
+  </data>
+</odoo>
