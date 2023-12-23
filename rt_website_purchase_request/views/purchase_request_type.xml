@@ -1,0 +1,46 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="rt_website_purchase_request.purchase_request_type">
+            <field name="name">purchase request type list</field>
+            <field name="model">purchase.request.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="rt_website_purchase_request.purchase_request_type_form">
+            <field name="name">purchase request type from</field>
+            <field name="model">purchase.request.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="rt_website_purchase_request.action_window">
+            <field name="name">action window</field>
+            <field name="res_model">purchase.request.type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <menuitem
+                id="menu_1_list"
+                name="Type"
+                parent="purchase_request.menu_purchase_request"
+                action="rt_website_purchase_request.action_window"
+                sequence="30"
+        />
+
+
+    </data>
+</odoo>

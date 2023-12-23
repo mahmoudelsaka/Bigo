@@ -1,0 +1,19 @@
+<odoo>
+
+
+    <template id="portal_my_home_purchase_request" name="Show Purchase Request" inherit_id="portal.portal_my_home"
+              customize_show="True" priority="10">
+        <xpath expr="//div[hasclass('list-group')]" position="inside">
+            <t t-if="request.env.user.is_purchase">
+                <div class="portal_purchase_request">
+                    <a class="list-group-item list-group-item-action d-flex align-items-center justify-content-between"
+                       href="/po/orders" title="Purchase Request">
+                        Purchase Requests
+                    </a>
+                </div>
+            </t>
+        </xpath>
+
+    </template>
+
+</odoo>

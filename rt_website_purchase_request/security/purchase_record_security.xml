@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+        <record id="user_can_only_show_own_purchase_request" model="ir.rule">
+            <field name="name">show own purchase request</field>
+            <field ref="purchase_request.model_purchase_request" name="model_id"/>
+            <field name="domain_force">[('assigned_to', '=', user.id)]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+            <field name="groups" eval="[(4, ref('purchase_request.group_purchase_request_user'))]"/>
+        </record>
+    </data>
+</odoo>

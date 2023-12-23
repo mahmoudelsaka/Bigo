@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+account_check_access_full,account_check_access_full,model_account_check,account.group_account_invoice,1,1,1,1
+sale_check_access_full,sale_check_access_full,model_account_payment,base.group_user,1,1,1,0
+sale_check_partialfull,sale_check_partialfull,account.model_account_partial_reconcile,base.group_user,1,1,1,0
+sale_method_check_access_full,sale_method_check_access_full,account.model_account_payment_method,base.group_user,1,1,1,1
+account_checkbook_access_full,account_checkbook_access_full,model_account_checkbook,account.group_account_invoice,1,1,1,1
+account_check_access_global,account_check_access_global,model_account_check,,1,0,0,0
+account_checkbook_access_global,account_checkbook_access_global,model_account_checkbook,,1,0,0,0
+account_internal_check,account_check_internal_check,model_account_payment_internal_check,account.group_account_invoice,1,1,1,1
+account_check_action_wizard,account_account_check_action_wizard,model_account_check_action_wizard,account.group_account_invoice,1,1,1,1

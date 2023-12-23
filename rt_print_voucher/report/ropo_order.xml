@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+
+        <template id="report_ropo_order_document">
+	<t t-call="web.external_layout">
+		<div class="page">
+			<div class="oe_structure" />
+
+			<h2 style="text-align:center">
+				<span t-if="o.type == 'payment'">Payment Order</span>
+				<span t-if="o.type == 'receipt'">Receipt Order</span>
+			</h2>
+
+			<br></br>
+
+			<div class="row">
+				<div class="col-xs-5">
+					<table style="text-align:center;margin-left:150px">
+						<tr>
+							<td style="width:30%;font-weight:bold;">Partner</td>
+							<td style="width:70%">
+								:<span t-field="o.partner_id" t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}' />
+							</td>
+						</tr>
+
+						<tr>
+							<td style="width:30%;font-weight:bold;">Company</td>
+							<td style="width:70%">
+								:<span t-field="o.company_id" />
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="col-xs-6 col-xs-offset-1">
+					<table style="text-align:center; margin-left:100px">
+						<tr>
+							<td style="width:30%;font-weight:bold;">Number</td>
+							<td style="width:70%">
+								:
+								<span t-field="o.name" />
+							</td>
+						</tr>
+						<tr>
+							<td style="width:30%;font-weight:bold;">Due Date</td>
+							<td style="width:70%">
+								:
+								<span t-field="o.due_date" />
+							</td>
+						</tr>
+						<tr>
+							<td style="width:30%;font-weight:bold;">Memo</td>
+							<td style="width:70%">
+								:
+								<span t-field="o.memo" />
+							</td>
+						</tr>
+						<tr>
+							<td style="width:30%;font-weight:bold;">Reference</td>
+							<td style="width:70%">
+								:
+								<span t-field="o.ref" />
+							</td>
+						</tr>
+						<tr>
+							<td style="width:30%;font-weight:bold;">Amount</td>
+							<td style="width:70%">
+								:
+								<span t-field="o.amount" />
+								<span t-field="o.currency_id.symbol" />
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+
+			<t t-if="o.note">
+				<br></br><br></br>
+				<strong>Note:</strong><br></br>
+				<p t-field="o.note" />
+			</t>
+			<div class="oe_structure" />
+		</div>
+	</t>
+</template>
+
+
+        <template id="report_ropo_order">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="rt_print_voucher.report_ropo_order_document" t-lang="o.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+
+    </data>
+</odoo>

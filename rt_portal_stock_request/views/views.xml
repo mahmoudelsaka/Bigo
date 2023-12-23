@@ -1,0 +1,675 @@
+<odoo>
+
+    <template id="get_po_info" name="Get po info">
+        <style>
+            .data_containt{
+            margin : 20px;
+            }
+        </style>
+        <t t-call="website.layout">
+            <div class="container data_containt">
+                <div class="o_portal container mt-3">
+                    <div class="row align-items-center bg-white g-0 border rounded">
+                        <div class="col-10">
+                            <ol class="o_portal_submenu breadcrumb mb-0 py-2 flex-grow-1">
+                                <li class="breadcrumb-item ms-1" data-oe-model="ir.ui.view" data-oe-id="488"
+                                    data-oe-field="arch">
+                                    <a href="/my/home" aria-label="Home" title="Home">
+                                        <i class="fa fa-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item ">
+                                    <a data-oe-model="ir.ui.view" data-oe-id="1250" data-oe-field="arch"
+                                       href="/sr/orders">Stock Request
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item active">
+                                    <t t-out="stock_request_id.name"/>
+                                </li>
+                            </ol>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="alert alert-success" role="alert">
+                            Stock Request
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <t t-if="stock_request_id.state == 'draft' or stock_request_id.state == 'to_approve'">
+                            <a class="btn btn-danger" t-attf-href="/cancel/sr/{{ stock_request_id.id }}">Cancel</a>
+                        </t>
+                        <a class="btn btn-primary" t-attf-href="/create_sr_web_order">Create</a>
+                    </div>
+                </div>
+
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Attribute</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>1</th>
+                            <td>Name</td>
+                            <td>
+                                <t t-out="stock_request_id.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>2</th>
+                            <td>Expected Date</td>
+                            <td>
+                                <t t-out="stock_request_id.expected_date"/>
+                            </td>
+                        </tr>
+                        <t t-if="lines">
+                            <tr>
+                                <th colspan="3">Lines</th>
+                            </tr>
+                            <tr style="background-color:#fff">
+                                <th>
+                                    <span>Product</span>
+                                </th>
+                                <td>
+                                    <span>Product Quantity</span>
+                                </td>
+                            </tr>
+                        </t>
+                        <tr>
+                            <t t-foreach="lines" t-as="item">
+                                <tr>
+                                    <th>
+                                        <span t-field="item.product_id.name"/>
+                                    </th>
+                                    <td>
+                                        <span t-field="item.product_uom_qty"/>
+                                    </td>
+
+                                </tr>
+                            </t>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+
+    <template id="sr_orders" name="Sr orders">
+        <style>
+            .create_purchase{
+            margin:10px 0px;
+            }
+            .label_default{
+            padding : 5px;
+            color : #fff;
+            border-radius : 5px;
+            font-size : 12px;
+            }
+            .label_default{
+            background-color : #ffc107;
+            }
+            .label_approve{
+            background-color : #0dcaf0;
+            }
+
+            .label_approved{
+            background-color : #0d6efd;
+            }
+            .label_reject{
+            background-color : #dc3545;
+            }
+            .label_done{
+            background-color : #198754;
+            }
+        </style>
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="header">
+                    <a class="btn btn-primary create_purchase" href="/create_sr_web_order">Create</a>
+                </div>
+                <div class="containt">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Gl Account</th>
+                                <th scope="col">State</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="orders" t-as="order">
+                                <tr>
+                                    <th scope="row">
+                                        1
+                                    </th>
+                                    <td>
+                                        <a t-attf-href="/sr/info/{{ order.id }}">
+                                            <t t-esc="order.name"/>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <t t-esc="order.location_id.name"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="order.state"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+    <template id="create_sr_from_website" name="Create Website">
+        <style>
+            .containt{
+            border : 1px solid #ddd;
+            padding:20px;
+            margin : 20px;
+            margin-radius : 10px;
+            border-radius : 3px;
+            }
+            .header .containt{
+            text-align : center;
+            }
+            .containt .header{
+            text-align:center;
+
+            }
+            .containt .form-group{
+            margin-bottom:10px;
+            }
+
+            .containt .header h2{
+            margin-bottom:20px;
+            }
+            .containt button{
+            background-color : #714B67;
+            border-color : #714B67;
+            width:175px;
+            border-radius : 0px;
+            }
+            .containt button:hover{
+            background-color : #714B67;
+            border-color : #714B67;
+            }
+        </style>
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="containt">
+                    <div class="header">
+                        <h2>Create Stock Request</h2>
+                    </div>
+                    <form role="form" action="/create/sr_web" method="post">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="warehouse" class="control_label col-sm-2 col-form-label">Warehouse:
+                                </label>
+                                <div class="col-sm-10">
+                                    <select name="warehouse" class="form-control" required="required">
+                                        <t t-foreach="warehouse" t-as="value">
+                                            <option t-esc="value.name" t-att-value="value.id"/>
+                                        </t>
+                                    </select>
+                                </div>
+                            </div>
+                            <!--                            <div class="row">-->
+                            <!--                                <label for="location" class="control_label col-sm-2 col-form-label">Location:-->
+                            <!--                                </label>-->
+                            <!--                                <div class="col-sm-10">-->
+                            <!--                                    <select name="location" class="form-control" required="required">-->
+                            <!--                                        <t t-foreach="location" t-as="value">-->
+                            <!--                                            <option t-esc="value.name" t-att-value="value.id"/>-->
+                            <!--                                        </t>-->
+                            <!--                                    </select>-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
+
+                            <div class="row">
+                                <label for="location" class="control_label col-sm-2 col-form-label">Gl Account:
+                                </label>
+                                <div class="col-sm-10">
+                                    <select name="account_id" class="form-control" required="required">
+                                        <t t-foreach="account_id" t-as="value">
+                                            <option t-esc="value.display_name" t-att-value="value.id"/>
+                                        </t>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="expected_date" class="control_label col-sm-2">Expected Date:</label>
+                                <div class="form-group col-sm-10">
+                                    <input type="date" name="expected_date" t-att-value="expected_date"
+                                           id="expected_date" required="required"
+                                           class="form-control" placeholder="Expected Date"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="description" class="control_label col-sm-2">Description:</label>
+                                <div class="form-group col-sm-10">
+                                    <textarea type="text" name="description" t-att-value="description"
+                                              id="description" required="required"
+                                              class="form-control" placeholder="Description"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Next</button>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+    <template id="edit_sr_from_website" name="Create Website">
+        <style>
+
+            .old_info{
+            margin-bottom:20px;
+            }
+
+
+            .list-item {
+            background: #ffffff;
+            border-radius: 4px;
+            box-shadow: 0px 0px 5px 1px #ccc;
+            cursor: pointer;
+            display: inline-block;
+            max-height: 70px;
+            overflow: hidden;
+            text-overflow: hidden;
+            transition: max-height 0.2s linear;
+            width: 100%;
+            }
+
+            .list-item-title {
+            color: #ffffff;
+            background-color: #48c1ff;
+            border-radius: 4px 0 0 4px;
+            box-shadow: 0px 0px 5px 1px #ccc;
+            float: left;
+            height: 70px;
+            line-height: 70px;
+            overflow: hidden;
+            position: absolute;
+            text-align: center;
+            transition: all 0.2s linear, width 0.1s linear 0.1s, margin 0.1s linear 0.1s;
+            width: 100px;
+            }
+
+            .list-item-title-text {
+            opacity: 1;
+            transition: opacity 0.3s linear;
+            }
+
+            .list-item-title-icon {
+            opacity: 0;
+            font-size: 40px;
+            width: 100px;
+            position: absolute;
+            transition: all 0.3s linear, width 0.1s linear 0.1s;
+            }
+            .list-item-content-name {
+            border:none;
+            font-weight: bold;
+            line-height: 70px;
+            margin-left: 130px;
+            padding-top: 0;
+            transition: padding-top 0.2s linear, margin-left 0.2s linear;
+            }
+
+        </style>
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="containt">
+                    <div class="header">
+                        <h2>Edit Stock Request</h2>
+                    </div>
+                    <div class="old_info">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="list-container">
+                                    <div class="list-item">
+                                        <div class="list-item-title">
+                                            <div class="list-item-title-icon fa fa-ship"></div>
+                                            <div class="list-item-title-text">Gl Account</div>
+                                        </div>
+
+                                        <div class="list-item-content-text">
+                                            <input class="list-item-content-name" t-att-value="sr_id.gl_account.name"/>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="list-container">
+                                    <div class="list-item">
+                                        <div class="list-item-title">
+                                            <div class="list-item-title-icon fa fa-ship"></div>
+                                            <div class="list-item-title-text">Expected Date</div>
+                                        </div>
+
+                                        <div class="list-item-content-text">
+                                            <input class="list-item-content-name" t-att-value="sr_id.expected_date"/>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="list-container">
+                                    <div class="list-item">
+                                        <div class="list-item-title">
+                                            <div class="list-item-title-icon fa fa-ship"></div>
+                                            <div class="list-item-title-text">Description</div>
+                                        </div>
+                                        <div class="list-item-content-text">
+                                            <input class="list-item-content-name" t-att-value="description"/>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <form role="form" action="/edit/sr_web" method="post">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <input type="hidden" name="id" t-att-value="id"/>
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="warehouse" class="control_label col-sm-2 col-form-label">Warehouse:
+                                </label>
+                                <div class="col-sm-10">
+                                    <select name="warehouse" class="form-control" required="required">
+                                        <t t-foreach="warehouse" t-as="value">
+                                            <option t-esc="value.name" t-att-value="value.id"/>
+                                        </t>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="location" class="control_label col-sm-2 col-form-label">Location:
+                                </label>
+                                <div class="col-sm-10">
+                                    <select name="location" class="form-control" required="required">
+                                        <t t-foreach="location" t-as="value">
+                                            <option t-esc="value.name" t-att-value="value.id"/>
+                                        </t>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <label for="location" class="control_label col-sm-2 col-form-label">Gl Account:
+                                </label>
+                                <div class="col-sm-10">
+                                    <select name="account_id" class="form-control" required="required">
+                                        <t t-foreach="account_id" t-as="value">
+                                            <option t-esc="value.name" t-att-value="value.id"/>
+                                        </t>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="expected_date" class="control_label col-sm-2">Expected Date:</label>
+                                <div class="form-group col-sm-10">
+                                    <input type="date" name="expected_date" t-att-value="expected_date"
+                                           id="expected_date" required="required"
+                                           class="form-control" placeholder="Expected Date"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="description" class="control_label col-sm-2">Description:</label>
+                                <div class="form-group col-sm-10">
+                                    <textarea type="text" name="description" t-att-value="description"
+                                              id="description" required="required"
+                                              class="form-control" placeholder="Description"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Next</button>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="add_lines" name="Add Lines">
+        <style>
+            .data_containt{
+            margin : 20px;
+            }
+        </style>
+        <t t-call="website.layout">
+            <div class="container data_containt">
+                <!-- go back to create stock request page -->
+                <div class="o_portal container mt-3">
+                    <div class="row align-items-center bg-white g-0 border rounded">
+                        <div class="col-10">
+                            <ol class="o_portal_submenu breadcrumb mb-0 py-2 flex-grow-1">
+                                <li class="breadcrumb-item ms-1" data-oe-model="ir.ui.view" data-oe-id="488"
+                                    data-oe-field="arch">
+                                    <a href="/my/home" aria-label="Home" title="Home">
+                                        <i class="fa fa-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item ">
+                                    <a t-attf-href="/edit/sr/{{ sr_rec.id }}">
+                                        Edit Sr
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item active">
+                                </li>
+                            </ol>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="alert alert-success" role="alert">
+                    Stock Request
+                </div>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Attribute</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>1</th>
+                            <td>Name</td>
+                            <td>
+                                <t t-out="name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>2</th>
+                            <td>Warehouse</td>
+                            <td>
+                                <t t-out="sr_rec.warehouse_id.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>3</th>
+                            <td>Location</td>
+                            <td>
+                                <t t-out="sr_rec.location_id.name"/>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>5</th>
+                            <td>Company</td>
+                            <td>
+                                <t t-out="sr_rec.company_id.name"/>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>6</th>
+                            <td>Gl Account</td>
+                            <td>
+                                <t t-out="sr_rec.gl_account.name"/>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <div class="lines">
+                    <t t-if="sr_rec.stock_request_ids">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="alert alert-success" role="alert">
+                                    Stock Request Lines
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <form role="form" action="/submit_sr" method="post">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <input type="hidden" class="form-control" id="id" name="id"
+                                           t-att-value="sr_rec.id"/>
+                                    <button type="submit" class="btn btn-primary">Submit SR</button>
+                                </form>
+
+                            </div>
+                        </div>
+
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Product</th>
+                                    <th scope="col">Product Unit Of Measure</th>
+                                    <th scope="col">Route</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Qty In Progress</th>
+                                    <th scope="col">Qty Done</th>
+                                    <th scope="col">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="sr_rec.stock_request_ids" t-as="item">
+                                    <tr>
+                                        <td>
+                                            <span t-field="item.product_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="item.product_uom_id"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="item.route_id"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="item.product_uom_qty"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="item.qty_in_progress"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="item.qty_done"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="item.state"/>
+                                        </td>
+                                        <td>
+                                            <button
+                                                    t-attf-data-rec_product="{{ item.id }}"
+                                                    id="remove_line"
+                                                    class="btn btn-outline-secondary btn-sm fetch_user_customer remove_stock_request">
+                                                Delete
+                                            </button>
+
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </t>
+                </div>
+                <div class="containt">
+                    <div class="alert alert-warning" role="alert">
+                        Add Line
+                    </div>
+                    <form role="form" action="/create/sr_line" method="post">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <input type="hidden" name="id" t-att-value="id"/>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="product">Search Stock Product</label>
+                                <div class="o_stock_website_product_search col-md-3">
+                                    <input type="text"
+                                           class="form-control o_stock_portal_product_input"
+                                           id="product_stock_name_input"
+                                           name="product_stock_search"
+                                           placeholder="Search stock products..."/>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="product_stock_results_table"/>
+                        </div>
+                        <!--                        <div class="row">-->
+                        <!--                            <div class="col-md-4">-->
+                        <!--                                <label for="product">Stock Product</label>-->
+                        <!--                                <select name="product" class="form-control"-->
+                        <!--                                        required="required" id="product_name_val">-->
+                        <!--                                    <option></option>-->
+                        <!--                                    <t t-foreach="product" t-as="o">-->
+                        <!--                                        <option t-esc="o.display_name" t-att-value="o.id"-->
+                        <!--                                                required="required"/>-->
+                        <!--                                    </t>-->
+                        <!--                                </select>-->
+                        <!--                            </div>-->
+                        <!--                            <div class="form-group col-md-4">-->
+                        <!--                                <label for="">Product Quantity</label>-->
+                        <!--                                <input type="number" class="form-control" id="quantity" name="quantity"-->
+                        <!--                                       t-att-value="quantity"/>-->
+                        <!--                            </div>-->
+                        <!--                            <div class="form-group col-md-4">-->
+                        <!--                                <button type="create" class="btn btn-secondary text-center"-->
+                        <!--                                        style="margin-top: 24px;">-->
+                        <!--                                    Add-->
+                        <!--                                </button>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

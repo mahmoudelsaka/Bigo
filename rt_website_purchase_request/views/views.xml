@@ -1,0 +1,907 @@
+<odoo>
+
+
+    <template id="create_po_from_website" name="Create Website">
+        <style>
+            .containt{
+            border : 1px solid #ddd;
+            padding:20px;
+            margin : 20px;
+            margin-radius : 10px;
+            border-radius : 3px;
+            }
+            .header .containt{
+            text-align : center;
+            }
+            .containt .header{
+            text-align:center;
+
+            }
+            .containt .form-group{
+            margin-bottom:10px;
+            }
+
+            .containt .header h2{
+            margin-bottom:20px;
+            }
+            .containt button{
+            background-color : #714B67;
+            border-color : #714B67;
+            width:175px;
+            border-radius : 0px;
+            }
+            .containt button:hover{
+            background-color : #714B67;
+            border-color : #714B67;
+            }
+        </style>
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="containt">
+                    <div class="header">
+                        <h2>Create Purchase Request</h2>
+                    </div>
+                    <form role="form" action="/create/po_web" enctype="multipart/form-data" method="post">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <!--                        <div class="form-group">-->
+                        <!--                            <div class="row">-->
+                        <!--                                <label for="requested_by" class="control_label col-sm-2 col-form-label">Approve:</label>-->
+                        <!--                                <div class="col-sm-10">-->
+                        <!--                                    &lt;!&ndash;                                    <select name="assigned_to" class="form-control" required="required"&ndash;&gt;-->
+                        <!--                                    &lt;!&ndash;                                            readonly="readonly">&ndash;&gt;-->
+                        <!--                                    &lt;!&ndash;                                        <t t-foreach="assigned_to" t-as="value">&ndash;&gt;-->
+                        <!--                                    &lt;!&ndash;                                            <option t-esc="value.name" t-att-value="value.id" readonly="readonly"/>&ndash;&gt;-->
+                        <!--                                    &lt;!&ndash;                                        </t>&ndash;&gt;-->
+                        <!--                                    &lt;!&ndash;                                    </select>&ndash;&gt;-->
+                        <!--                                    <input name="assigned_to" t-att-value="assigned_to.id" t-esc="assigned_to.name" class="form-control"/>-->
+                        <!--                                </div>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="type" class="control_label col-sm-2 col-form-label">Type:</label>
+                                <div class="col-sm-10">
+                                    <select name="type" class="form-control" required="required">
+                                        <option></option>
+                                        <t t-foreach="type" t-as="value">
+                                            <option t-esc="value.name" t-att-value="value.id"/>
+                                        </t>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="date_start" class="control_label col-sm-2">Description:</label>
+                                <div class="form-group col-sm-10">
+                                    <textarea type="text" name="description" t-att-value="description"
+                                              id="description" required="required"
+                                              class="form-control" placeholder="Description"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="date_start" class="control_label col-sm-2">Attachment:</label>
+                                <div class="form-group col-sm-10">
+                                    <!--                                    <input type="file" name="attachment" t-att-value="attachment"-->
+                                    <!--                                           id="attachment" required="required"-->
+                                    <!--                                           class="form-control" placeholder="Attachment" multiple="true"-->
+                                    <!--                                           accept="image/*,application/pdf,video/*"/>-->
+                                    <input type="file" name="att[]" multiple="true"
+                                           accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel,image/*,application/pdf,video/*"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Next</button>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+    <template id="add_lines" name="Add Lines">
+        <style>
+            .data_containt{
+            margin : 20px;
+            }
+        </style>
+        <t t-call="website.layout">
+            <div class="container data_containt">
+
+                <div class="o_portal container mt-3">
+                    <div class="row align-items-center bg-white g-0 border rounded">
+                        <div class="col-10">
+                            <ol class="o_portal_submenu breadcrumb mb-0 py-2 flex-grow-1">
+                                <li class="breadcrumb-item ms-1" data-oe-model="ir.ui.view" data-oe-id="488"
+                                    data-oe-field="arch">
+                                    <a href="/my/home" aria-label="Home" title="Home">
+                                        <i class="fa fa-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item ">
+                                    <a t-attf-href="/edit/pr/{{ po_rec.id }}">
+                                        Edit Pr
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item active">
+                                </li>
+                            </ol>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="alert alert-success" role="alert">
+                    Purchase Request
+                </div>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Attribute</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>1</th>
+                            <td>Name</td>
+                            <td>
+                                <t t-out="po_rec.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>2</th>
+                            <td>Order Deadline</td>
+                            <td>
+                                <t t-out="po_rec.date_start"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="lines">
+                    <t t-if="po_rec.line_ids">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="alert alert-success" role="alert">
+                                    Purchase Request Lines
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <form role="form" action="/submit_br" method="post">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <input type="hidden" class="form-control" id="id" name="id"
+                                           t-att-value="po_rec.id"/>
+                                    <button type="submit" class="btn btn-primary">Submit PR</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Product</th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Unit Price</th>
+                                    <th scope="col" required="required">Gl Account</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="po_rec.line_ids" t-as="item">
+                                    <tr>
+                                        <td>
+                                            <span t-field="item.product_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="item.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="item.product_qty"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="item.estimated_cost"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="item.gl_account_id.display_name" required="required"/>
+                                        </td>
+                                        <td>
+                                            <button
+                                                    t-attf-data-rec_product="{{ item.id }}"
+                                                    class="btn btn-outline-secondary btn-sm fetch_user_customer">Delete
+                                            </button>
+
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </t>
+                </div>
+                <div class="containt">
+                    <div class="alert alert-warning" role="alert">
+                        Add Line
+                    </div>
+                    <form role="form" action="/create/po_line" method="post">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <input type="hidden" id="product_rec_id_input" name="id" t-att-value="id"/>
+                        <div class="form-row">
+                            <div class="row">
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <input type="hidden"
+                                               class="form-control o_portal_rec_id"
+                                               id="product_rec_id"
+                                               name="id"
+                                               t-att-value="id"
+                                        />
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="product_id">Search Product</label>
+                                        <div class="o_website_product_search col-md-3">
+                                            <input type="text"
+                                                   class="form-control o_portal_product_input"
+                                                   id="product_name_input"
+                                                   name="products_search"
+                                                   placeholder="Search products..."/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <!--                                    <div class="my_select_product my_select_product_val col-md-3">-->
+                                    <!--                                        <label for="product_id">Product</label>-->
+                                    <!--                                        <select name="product_id" data-live-search="true"-->
+                                    <!--                                                class="form-control select_class"-->
+                                    <!--                                                required="required" id="product_name_val">-->
+                                    <!--                                            <option></option>-->
+                                    <!--                                            <t t-foreach="product_id" t-as="o">-->
+                                    <!--                                                <option t-esc="o.display_name" t-att-value="o.id"-->
+                                    <!--                                                        required="required"/>-->
+                                    <!--                                            </t>-->
+                                    <!--                                        </select>-->
+                                    <!--                                    </div>-->
+
+                                    <!--                                    <div class="form-group col-md-3">-->
+                                    <!--                                        <label for="description">Description</label>-->
+                                    <!--                                        <input type="text" class="form-control" id="description"-->
+                                    <!--                                               name="description"-->
+                                    <!--                                               t-att-value="description"/>-->
+                                    <!--                                    </div>-->
+                                    <!--                                    <div class="form-group col-md-2">-->
+                                    <!--                                        <label for="product_qty">Qty</label>-->
+                                    <!--                                        <input type="number" class="form-control" id="product_qty"-->
+                                    <!--                                               name="product_qty"-->
+                                    <!--                                               t-att-value="product_qty"/>-->
+                                    <!--                                    </div>-->
+                                    <!--                                    <div class="form-group col-md-2">-->
+                                    <!--                                        <label for="price_unit">Price Unit</label>-->
+                                    <!--                                        <input type="number" class="form-control" id="price_unit" name="price_unit"-->
+                                    <!--                                               t-att-value="price_unit"/>-->
+                                    <!--                                    </div>-->
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="product_id" required="required">Gl Account</label>
+                                            <select name="gl_account_id" data-live-search="true" class="form-control"
+                                                    required="required">
+                                                <option></option>
+                                                <t t-foreach="gl_account_id" t-as="value">
+                                                    <option t-esc="value.display_name" t-att-value="value.id"
+                                                            required="required"/>
+                                                </t>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!--                                    <div class="form-group col-md-1">-->
+                                    <!--                                        <button type="create" class="btn btn-secondary text-center"-->
+                                    <!--                                                style="margin-top: 24px;">-->
+                                    <!--                                            Add-->
+                                    <!--                                        </button>-->
+                                    <!--                                    </div>-->
+                                    <div class="col-md-9">
+                                        <div class="product_results_table"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="get_po_info" name="Get po info">
+        <style>
+            .data_containt{
+            margin : 20px;
+            }
+        </style>
+        <t t-call="website.layout">
+            <div class="container data_containt">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="alert alert-success" role="alert">
+                            Purchase Request
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-6">
+                            <t t-if="purchase_request.state == 'draft' or purchase_request.state == 'to_approve'">
+                                <a class="btn btn-danger" t-attf-href="/cancel/pr/{{ purchase_request.id }}">Cancel</a>
+                            </t>
+                            <a class="btn btn-primary" t-attf-href="/create_po_web_order">Create</a>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Attribute</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Name</td>
+                            <td>
+                                <t t-out="purchase_request.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Order Deadline</td>
+                            <td>
+                                <t t-out="purchase_request.date_start"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Requested By</td>
+                            <td>
+                                <t t-out="purchase_request.requested_by.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Approver</td>
+                            <td>
+                                <t t-out="purchase_request.assigned_to.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Type</td>
+                            <td>
+                                <t t-out="purchase_request.type.name"/>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <t t-if="lines">
+                            <tr>
+                                <th colspan="3">Lines</th>
+                            </tr>
+                            <tr style="background-color:#fff">
+                                <td>
+                                    <span>Product</span>
+                                </td>
+                                <td>
+                                    <span>Description</span>
+                                </td>
+                                <td>
+                                    <span>UOM</span>
+                                </td>
+                                <td>
+                                    <span>Product Quantity</span>
+                                </td>
+                                <td>
+                                    <span>Estimated Cost</span>
+                                </td>
+                                <td>
+                                    <span>GL Account</span>
+                                </td>
+                            </tr>
+                        </t>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <t t-foreach="lines" t-as="item">
+                                <tr>
+                                    <th>
+                                        <span t-field="item.product_id.name"/>
+                                    </th>
+                                    <th>
+                                        <span t-field="item.name"/>
+                                    </th>
+                                    <th>
+                                        <span t-field="item.product_uom_id.name"/>
+                                    </th>
+                                    <td>
+                                        <span t-field="item.product_qty"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="item.estimated_cost"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="item.gl_account_id"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+
+
+    <template id="update_order_line" name="Update order line">
+        <style>
+            .containt{
+            border : 1px solid #000;
+            padding:20px;
+            margin : 20px;
+            margin-radius : 10px;
+            border-radius : 3px;
+            }
+            .header .containt{
+            text-align : center;
+            }
+            .containt .header{
+            text-align:center;
+
+            }
+            .containt .form-group{
+            margin-bottom:10px;
+            }
+
+            .containt .header h2{
+            margin-bottom:20px;
+            }
+            .containt button{
+            background-color : #714B67;
+            border-color : #714B67;
+            width:175px;
+            border-radius : 0px;
+            }
+            .containt button:hover{
+            background-color : #714B67;
+            border-color : #714B67;
+            }
+        </style>
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="containt">
+                    <div class="header">
+                        <h2>Update Purchase Request Line</h2>
+                    </div>
+                    <form role="form" action="/update/line" method="post">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <input type="hidden" class="form-control" id="line_id" name="line_id"
+                               t-att-value="purchase_request_line.id"/>
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="product_id" class="control_label col-sm-2 col-form-label">Product</label>
+                                <div class="col-sm-10">
+                                    <select name="product_id" class="form-control" required="required">
+                                        <option></option>
+                                        <t t-foreach="products" t-as="value">
+                                            <option t-esc="value.name" t-att-value="value.id"/>
+                                        </t>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="product_qty" class="control_label col-sm-2 col-form-label">Quantity</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" id="product_qty"
+                                           name="product_qty"
+                                           t-att-value="product_qty"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="price_unit" class="col-sm-2">Unit Price</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" id="price_unit" name="price_unit"
+                                           t-att-value="price_unit"/>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+    <template id="edit_pr_from_website" name="Edit PR">
+        <style>
+            .containt{
+            border : 1px solid #ddd;
+            padding:20px;
+            margin : 20px;
+            margin-radius : 10px;
+            border-radius : 3px;
+            }
+            .header .containt{
+            text-align : center;
+            }
+            .containt .header{
+            text-align:center;
+
+            }
+            .containt .form-group{
+            margin-bottom:10px;
+            }
+
+            .containt .header h2{
+            margin-bottom:20px;
+            }
+            .containt button{
+            background-color : #714B67;
+            border-color : #714B67;
+            width:175px;
+            border-radius : 0px;
+            }
+            .containt button:hover{
+            background-color : #714B67;
+            border-color : #714B67;
+            }
+            textarea{
+            background-color:#714B67;
+            color:#fff;
+            }
+            .shape{
+            border-style: solid; border-width: 0 70px 40px 0; float:right; height: 0px; width: 0px;
+            -ms-transform:rotate(360deg); /* IE 9 */
+            -o-transform: rotate(360deg); /* Opera 10.5 */
+            -webkit-transform:rotate(360deg); /* Safari and Chrome */
+            transform:rotate(360deg);
+            }
+            .offer{
+            background:#fff; border:1px solid #ddd; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); margin: 15px 0;
+            overflow:hidden;
+            }
+            .offer:hover {
+            -webkit-transform: scale(1.1);
+            -moz-transform: scale(1.1);
+            -ms-transform: scale(1.1);
+            -o-transform: scale(1.1);
+            transform:rotate scale(1.1);
+            -webkit-transition: all 0.4s ease-in-out;
+            -moz-transition: all 0.4s ease-in-out;
+            -o-transition: all 0.4s ease-in-out;
+            transition: all 0.4s ease-in-out;
+            }
+            .shape {
+            border-color: rgba(255,255,255,0) #d9534f rgba(255,255,255,0) rgba(255,255,255,0);
+            }
+            .offer-radius{
+            border-radius:7px;
+            }
+            .offer-danger { border-color: #d9534f; }
+            .offer-danger .shape{
+            border-color: transparent #d9534f transparent transparent;
+            }
+            .offer-success { border-color: #5cb85c; }
+            .offer-success .shape{
+            border-color: transparent #5cb85c transparent transparent;
+            }
+            .offer-default { border-color: #999999; }
+            .offer-default .shape{
+            border-color: transparent #999999 transparent transparent;
+            }
+            .offer-primary { border-color: #428bca; }
+            .offer-primary .shape{
+            border-color: transparent #428bca transparent transparent;
+            }
+            .offer-info { border-color: #5bc0de; }
+            .offer-info .shape{
+            border-color: transparent #5bc0de transparent transparent;
+            }
+            .offer-warning { border-color: #f0ad4e; }
+            .offer-warning .shape{
+            border-color: transparent #f0ad4e transparent transparent;
+            }
+
+            .shape-text{
+            color:#fff; font-size:12px; font-weight:bold; position:relative; right:-40px; top:2px; white-space: nowrap;
+            -ms-transform:rotate(30deg); /* IE 9 */
+            -o-transform: rotate(360deg); /* Opera 10.5 */
+            -webkit-transform:rotate(30deg); /* Safari and Chrome */
+            transform:rotate(30deg);
+            }
+            .offer-content{
+            padding:0 20px 10px;
+            }
+            @media (min-width: 487px) {
+            .container {
+            max-width: 750px;
+            }
+            .col-sm-6 {
+            width: 50%;
+            }
+            }
+            @media (min-width: 900px) {
+            .container {
+            max-width: 970px;
+            }
+            .col-md-4 {
+            width: 33.33333333333333%;
+            }
+            }
+
+            @media (min-width: 1200px) {
+            .container {
+            max-width: 1170px;
+            }
+            .col-lg-3 {
+            width: 25%;
+            }
+            }
+            .old_info{
+            margin-bottom:20px;
+            }
+
+
+            .list-item {
+            background: #ffffff;
+            border-radius: 4px;
+            box-shadow: 0px 0px 5px 1px #ccc;
+            cursor: pointer;
+            display: inline-block;
+            max-height: 70px;
+            overflow: hidden;
+            text-overflow: hidden;
+            transition: max-height 0.2s linear;
+            width: 100%;
+            }
+
+            .list-item-title {
+            color: #ffffff;
+            background-color: #48c1ff;
+            border-radius: 4px 0 0 4px;
+            box-shadow: 0px 0px 5px 1px #ccc;
+            float: left;
+            height: 70px;
+            line-height: 70px;
+            overflow: hidden;
+            position: absolute;
+            text-align: center;
+            transition: all 0.2s linear, width 0.1s linear 0.1s, margin 0.1s linear 0.1s;
+            width: 100px;
+            }
+
+            .list-item-title-text {
+            opacity: 1;
+            transition: opacity 0.3s linear;
+            }
+
+            .list-item-title-icon {
+            opacity: 0;
+            font-size: 40px;
+            width: 100px;
+            position: absolute;
+            transition: all 0.3s linear, width 0.1s linear 0.1s;
+            }
+            .list-item-content-name {
+            border:none;
+            font-weight: bold;
+            line-height: 70px;
+            margin-left: 130px;
+            padding-top: 0;
+            transition: padding-top 0.2s linear, margin-left 0.2s linear;
+            }
+
+
+        </style>
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="containt">
+                    <div class="header">
+                        <h2>Edit Purchase Request</h2>
+                    </div>
+
+                    <!--                    <div class="row">-->
+                    <!--                        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">-->
+                    <!--                            <div class="offer offer-info">-->
+                    <!--                                <div class="shape">-->
+                    <!--                                    <div class="shape-text">-->
+                    <!--                                        <span class="glyphicon glyphicon glyphicon-th"></span>-->
+                    <!--                                    </div>-->
+                    <!--                                </div>-->
+                    <!--                                <div class="offer-content">-->
+                    <!--                                    <h3 class="lead">-->
+                    <!--                                        Approver :-->
+                    <!--                                    </h3>-->
+                    <!--                                    <p>-->
+                    <!--                                        <input type="text" style="border:none" t-att-value="pr_rec.assigned_to.name"/>-->
+                    <!--                                    </p>-->
+                    <!--                                </div>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!--                        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">-->
+                    <!--                            <div class="offer offer-radius offer-info">-->
+                    <!--                                <div class="shape">-->
+                    <!--                                    <div class="shape-text">-->
+                    <!--                                        <span class="glyphicon  glyphicon-user"></span>-->
+                    <!--                                    </div>-->
+                    <!--                                </div>-->
+                    <!--                                <div class="offer-content">-->
+                    <!--                                    <h3 class="lead">-->
+                    <!--                                        Type :-->
+                    <!--                                    </h3>-->
+                    <!--                                    <p>-->
+                    <!--                                        <input type="text" style="border:none" t-att-value="pr_rec.type.name"/>-->
+                    <!--                                    </p>-->
+                    <!--                                </div>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!--                        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">-->
+                    <!--                            <div class="offer offer-info">-->
+                    <!--                                <div class="shape">-->
+                    <!--                                    <div class="shape-text">-->
+                    <!--                                        <span class="glyphicon  glyphicon-home"></span>-->
+                    <!--                                    </div>-->
+                    <!--                                </div>-->
+                    <!--                                <div class="offer-content">-->
+                    <!--                                    <h3 class="lead">-->
+                    <!--                                        Description :-->
+
+                    <!--                                    </h3>-->
+                    <!--                                    <p>-->
+                    <!--                                        <input type="text" style="border:none" t-att-value="test_desc" disabled="1"/>-->
+
+                    <!--                                    </p>-->
+                    <!--                                </div>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+
+                    <div class="old_info">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="list-container">
+                                    <div class="list-item">
+                                        <div class="list-item-title">
+                                            <div class="list-item-title-icon fa fa-ship"></div>
+                                            <div class="list-item-title-text">Approver</div>
+                                        </div>
+
+                                        <div class="list-item-content-text">
+                                            <input class="list-item-content-name"
+                                                   t-att-value="pr_rec.assigned_to.name"/>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="list-container">
+                                    <div class="list-item">
+                                        <div class="list-item-title">
+                                            <div class="list-item-title-icon fa fa-ship"></div>
+                                            <div class="list-item-title-text">Type</div>
+                                        </div>
+
+                                        <div class="list-item-content-text">
+                                            <input class="list-item-content-name" t-att-value="pr_rec.type.name"/>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="list-container">
+                                    <div class="list-item">
+                                        <div class="list-item-title">
+                                            <div class="list-item-title-icon fa fa-ship"></div>
+                                            <div class="list-item-title-text">Description</div>
+                                        </div>
+                                        <div class="list-item-content-text">
+                                            <input class="list-item-content-name" t-att-value="test_desc"/>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+                    <form role="form" action="/edit/pr_web" enctype="multipart/form-data" method="post">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <input type="hidden" name="id" t-att-value="id"/>
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="approve_id" class="control_label col-sm-2 col-form-label">Approve:
+                                </label>
+                                <div class="col-sm-10">
+                                    <select name="approve_id" class="form-control" required="required">
+                                        <t t-foreach="approve_id" t-as="value">
+                                            <option t-esc="value.name" t-att-value="value.id"/>
+                                        </t>
+                                    </select>
+                                </div>
+                            </div>
+                            <br/>
+
+                            <div class="row">
+                                <label for="type" class="control_label col-sm-2 col-form-label">Type:
+                                </label>
+                                <div class="col-sm-10">
+                                    <select name="type" class="form-control" required="required">
+                                        <t t-foreach="type" t-as="value">
+                                            <option t-esc="value.name" t-att-value="value.id"/>
+                                        </t>
+                                    </select>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <label for="description" class="control_label col-sm-2 col-form-label">Description:
+                                </label>
+                                <div class="form-group col-sm-10">
+                                    <textarea name="description" id="description" required="required"
+                                              t-att-value="pr_rec.note"
+                                              class="form-control my_textarea"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <label for="date_start" class="control_label col-sm-2">Attachment:</label>
+                                    <div class="form-group col-sm-10">
+                                        <input type="file" name="att[]" multiple="true"
+                                               accept="image/*,application/pdf,video/*"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <button type="submit" class="btn btn-primary">Next</button>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="check_manager" name="Create Website">
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="alert alert-primary" role="alert">
+                    You Do not have manager
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+</odoo>

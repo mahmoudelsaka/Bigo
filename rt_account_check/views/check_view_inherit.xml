@@ -1,0 +1,19 @@
+<odoo>
+    <data>
+
+	<!--     Inherit Form View to Modify it-->
+	    <record id="edit_check_status_edit" model="ir.ui.view">
+		<field name="name">change.check.status.view</field>
+		<field name="model">account.check</field>
+		<field name="inherit_id" ref="rt_account_check.view_account_check_form"/>
+<!--		<field name="groups_id" eval="[(4,ref('rt_account_check.edit_check_status'))]"/>-->
+		<field name="arch" type="xml">
+		    <xpath expr="//field[@name='state']" position="attributes">
+		        <!-- Add your fields or attributes here -->
+		        <attribute name="readonly">0</attribute>
+		    </xpath>
+		</field>
+	    </record>
+
+    </data>
+</odoo>

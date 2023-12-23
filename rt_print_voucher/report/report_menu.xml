@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="0">
+
+<!-- REPORT MENU -->
+	<report id="receipt_payment_voucher"
+		model="account.bank.statement.line"
+		string="Receipt/Payment Voucher"
+		report_type="qweb-pdf"
+		name="rt_print_voucher.report_ropo_voucher"
+		file="rt_print_voucher.report_ropo_voucher"
+		menu="False"/>
+
+	</data>
+</odoo>

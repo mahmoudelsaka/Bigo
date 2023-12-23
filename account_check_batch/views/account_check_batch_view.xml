@@ -1,0 +1,214 @@
+<odoo>
+    <data>
+
+        <record id="view_account_check_batch_form" model="ir.ui.view">
+            <field name="name">view.account.check.batch.form</field>
+            <field name="model">account.check.batch</field>
+            <field name="arch" type="xml">
+                <form string="Check Batch">
+                    <header>
+                        <field name="is_created" invisible="1"/>
+                        <button name="action_draft"
+                                string="Reset to Draft"
+                                class="oe_highlight"
+                                type="object"
+                                states="confirm"/>
+                        <button name="action_confirm"
+                                string="Confirm"
+                                class="oe_highlight"
+                                type="object"
+                                states="draft"
+                        />
+                        <button name="create_check_line"
+                                string="Generate Checks"
+                                class="oe_highlight"
+                                type="object"
+                                attrs="{'invisible': [('is_created', '=', True)]}"
+                        />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,progress,confirm"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <field name="payment_ids" invisible="1"/>
+                            <button name="action_open_account_payment" type="object"
+                                    attrs="{'invisible':[('count_payment','=',0)]}"
+                                    icon="fa-list"
+                                    class="oe_stat_button">
+
+                                <field name="count_payment" widget="statinfo" string="Payments"/>
+                            </button>
+                        </div>
+                        <group>
+                            <group name="main_info">
+                                <field name="partner_id" attrs="{'readonly':[('state','=','confirm')]}"
+                                       options="{'no_create': True,'no_create_edit': True}"/>
+                                <field name="journal_id" attrs="{'readonly':[('state','=','confirm')]}"
+                                       options="{'no_create': True,'no_create_edit': True}"/>
+                                <field name="bank_id" attrs="{'readonly':[('state','=','confirm')]}"/>
+                                <field name="account_id" attrs="{'readonly':[('state','=','confirm')]}"
+                                       options="{'no_create': True,'no_create_edit': True}"/>
+                                <label for="duration" string="Duration"/>
+                                <div attrs="{'readonly':[('state','=','confirm')]}">
+                                    <field name="duration"
+                                           class="oe_inline" attrs="{'readonly':[('state','=','confirm')]}"/>
+                                    Months
+                                </div>
+                                <label for="amount"/>
+                                <div name="amount_div" class="o_row">
+                                    <field name="amount"
+                                           attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                    <field name="currency_id"
+                                           options="{'no_create': True, 'no_open': True}"
+                                           required="1"
+                                           attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                           groups="base.group_multi_currency"/>
+                                </div>
+                                <field name="down_payment_amount" attrs="{'readonly':[('state','=','confirm')]}"/>
+                            </group>
+
+                            <group name="check_info">
+                                <label for="start"/>
+                                <div class="o_row">
+                                <field name="start" attrs="{'readonly':[('state','=','confirm')]}"/>
+                                </div>
+                                <field name="issue_date" attrs="{'readonly':[('state','=','confirm')]}"/>
+                                <field name="start_date" attrs="{'readonly':[('state','=','confirm')]}"/>
+                                <field name="count_check" attrs="{'readonly':[('state','=','confirm')]}"/>
+                                <field name="owner_vat" attrs="{'readonly':[('state','=','confirm')]}"/>
+                                <field name="owner_name" attrs="{'readonly':[('state','=','confirm')]}"/>
+                                <field name="payment_type" attrs="{'readonly':[('state','=','confirm')]}"/>
+                                <field name="company_id" groups="base.group_multi_company"
+                                       attrs="{'invisible':[('state','=','confirm')]}"
+                                       options="{'no_create': True,'no_create_edit': True}"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Checks Info" name="check_batch_line">
+                                <field name="check_batch_line" attrs="{'readonly':[('state','=','confirm')]}">
+                                    <tree editable="bottom" create="true">
+                                        <field name="check_no" invisible="1"/>
+                                        <field name="check_name"/>
+                                        <field name="check_issue_date"/>
+                                        <field name="check_payment_date"/>
+                                        <field name="check_bank_id"/>
+                                        <field name="owner_vat"/>
+                                        <field name="owner_name"/>
+                                        <field name="journal_id"/>
+                                        <field name="account_id"/>
+                                        <field name="payment_id" readonly="1"/>
+                                        <field name="amount"/>
+                                        <field name="payment_type"/>
+
+                                        <field name="check_batch_id" invisible="1"/>
+                                    </tree>
+                                    <form create="true">
+                                        <sheet>
+                                            <group>
+                                                <group>
+                                                    <field name="check_no"/>
+                                                    <field name="check_name"/>
+                                                    <field name="check_issue_date"/>
+                                                    <field name="check_payment_date"/>
+                                                    <field name="check_bank_id"/>
+                                                    <field name="journal_id"/>
+                                                    <field name="account_id"/>
+                                                </group>
+
+                                                <group>
+                                                    <field name="owner_vat"/>
+                                                    <field name="owner_name"/>
+                                                    <field name="payment_id" readonly="1"/>
+                                                    <field name="amount"/>
+                                                    <field name="payment_type"/>
+                                                    <field name="check_batch_id" invisible="1"/>
+                                                </group>
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_account_check_batch_tree" model="ir.ui.view">
+            <field name="name">view.account.check.batch.tree</field>
+            <field name="model">account.check.batch</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="partner_id"/>
+                    <field name="journal_id"/>
+                    <field name="bank_id"/>
+                    <field name="account_id"/>
+                    <field name="duration"/>
+                    <field name="amount"/>
+                    <field name="start"/>
+                    <field name="count_check"/>
+                    <field name="owner_vat"/>
+                    <field name="owner_name"/>
+                    <field name="company_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_account_batch_search" model="ir.ui.view">
+            <field name="name">Batch Check</field>
+            <field name="model">account.check.batch</field>
+            <field name="arch" type="xml">
+                <search string="">
+                    <field name="partner_id"/>
+                    <field name="journal_id"/>
+                    <field name="bank_id"/>
+                    <field name="account_id"/>
+                    <field name="duration"/>
+                    <field name="amount"/>
+                    <field name="start"/>
+                    <field name="count_check"/>
+                    <field name="owner_vat"/>
+                    <field name="owner_name"/>
+                    <field name="company_id"/>
+                    <field name="state"/>
+                    <separator/>
+                    <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                    <filter string="In Progress" name="progress" domain="[('state', '=', 'progress')]"/>
+                    <filter string="Confirmed" name="confirm" domain="[('state', '=', 'confirm')]"/>
+                    <separator/>
+                    <group string="Group By..." expand="0" name="groupby">
+                        <filter string="Journal" name="journal_id" context="{'group_by': 'journal_id'}"/>
+                        <filter string="Customer" name="partner_id" context="{'group_by': 'partner_id'}"/>
+                        <filter string="Bank" name="bank_id" context="{'group_by': 'bank_id'}"/>
+                        <filter string="Account" name="account_id" context="{'group_by': 'account_id'}"/>
+                        <filter string="Company" name="company_id" context="{'group_by': 'company_id'}"/>
+                        <filter string="Status" name="state" context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_account_check_batch" model="ir.actions.act_window">
+            <field name="name">Check Batch</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.check.batch</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                    Click here to create a check batch.
+                </p>
+            </field>
+        </record>
+
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="account_check_batch_categ"
+                  parent="rt_account_payment_fix.menu_finance_bank_and_cash"
+                  action="action_account_check_batch" sequence="400"/>
+
+    </data>
+</odoo>

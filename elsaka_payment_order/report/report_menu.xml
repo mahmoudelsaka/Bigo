@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="0">
+
+ REPORT MENU
+	<report id="receipt_payment_voucher"
+		model="account.bank.statement.line"
+		string="Receipt/Payment Voucher"
+		report_type="qweb-pdf"
+		name="elsaka_payment_order.report_ropo_voucher"
+		file="elsaka_payment_order.report_ropo_voucher"
+		menu="False"/>
+
+	<report id="receipt_payment_order"
+		model="receipt.order"
+		string="Receipt/Payment Order"
+		report_type="qweb-pdf"
+		name="elsaka_payment_order.report_ropo_order"
+		file="elsaka_payment_order.report_ropo_order"/>
+
+	</data>
+</odoo>

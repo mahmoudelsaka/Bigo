@@ -1,0 +1,73 @@
+<odoo>
+    <template id="portal_my_home_product" name="Show Prodcuts" inherit_id="portal.portal_my_home"
+              customize_show="True" priority="10">
+        <xpath expr="//div[hasclass('list-group')]" position="inside">
+            <t t-if="request.env.user.is_purchase or request.env.user.is_stock">
+                <div class="portal_purchase_request">
+                    <a class="list-group-item list-group-item-action d-flex align-items-center justify-content-between"
+                       href="/products" title="Purchase Request">
+                        Products
+                    </a>
+                </div>
+            </t>
+        </xpath>
+    </template>
+    <template id="product_portal" name="Product Portal">
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="header">
+                    <form role="form" action="/search/product" method="post">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <input type="hidden" name="id" t-att-value="id"/>
+                        <div class="form-row">
+                            <div class="row">
+                                <div class="row">
+                                    <div class="form-group col-md-9">
+                                        <input type="text" class="form-control" id="product_name"
+                                               name="product_name"
+                                               t-att-value="product_name"/>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <button type="submit" class="btn btn-primary" placeholder="Search products...">
+                                            Search
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="containt">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Product On Hand</th>
+                                <th scope="col">Product Available</th>
+                                <th scope="col">Internal Reference</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="products" t-as="prod">
+                                <tr>
+                                    <td>
+                                        <t t-esc="prod['product'].name"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="prod['on_hand']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="prod['ava_quantity']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="prod['product'].default_code"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

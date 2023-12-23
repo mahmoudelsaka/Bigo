@@ -1,0 +1,18 @@
+<odoo>
+  <data>
+
+    <record id="updatestock_valuation_layer_value" model="ir.ui.view">
+        <field name="name">update.stock.valuation.layer.value</field>
+        <field name="model">stock.valuation.layer</field>
+        <field name="inherit_id" ref="stock_account.stock_valuation_layer_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="create">1</attribute>
+                <attribute name="import">1</attribute>
+<!--                <attribute name="create">1</attribute>-->
+            </xpath>
+        </field>
+    </record>
+
+  </data>
+</odoo>

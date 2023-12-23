@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_rt_print_voucher_rt_print_voucher,rt_print_voucher.rt_print_voucher,model_rt_print_voucher_rt_print_voucher,base.group_user,1,1,1,1

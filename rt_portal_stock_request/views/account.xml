@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <!--    <record id="res_config_settings_view_form" model="ir.ui.view">-->
+    <!--        <field name="name">res.config.settings.view.form.inherit.stock_request</field>-->
+    <!--        <field name="model">res.config.settings</field>-->
+    <!--        <field name="inherit_id" ref="stock_request.res_config_settings_view_form"/>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <xpath expr="//div[@id='stock_request']" position="after">-->
+
+    <!--                <div class="col-xs-12 col-md-12 ">-->
+    <!--                    <div class="">-->
+    <!--                        <field name="gl_account"/>-->
+    <!--                    </div>-->
+    <!--                    <div class="o_setting_right_pane">-->
+    <!--                        <label-->
+    <!--                                string="Enable Orders"-->
+    <!--                                for="gl_account"-->
+    <!--                        />-->
+    <!--                        <div class="text-muted">-->
+    <!--                            GL account-->
+    <!--                        </div>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+
+    <!--                <div class="col-xs-12 col-md-12 ">-->
+    <!--                    <div class="o_setting_left_pane">-->
+    <!--                        <field name="location_id"/>-->
+    <!--                    </div>-->
+    <!--                    <div class="o_setting_right_pane">-->
+    <!--                        <label-->
+    <!--                                string="Enable Orders"-->
+    <!--                                for="location_id"-->
+    <!--                        />-->
+    <!--                        <div class="text-muted">-->
+    <!--                            Location-->
+    <!--                        </div>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+
+
+    <!--            </xpath>-->
+    <!--        </field>-->
+    <!--    </record>-->
+
+
+    <record id="add_description_filed_to_stock_picking" model="ir.ui.view">
+        <field name="name">add.description.filed.to.stock.picking</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="description"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="res_config_settings_inheit_view" model="ir.ui.view">
+        <field name="name">res.config.settings.inherit.view</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="stock_request.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='stock_request']" position="after">
+                <div class="col-12" id="discount_limit">
+                    <div class="o_setting_left_pane" style="width:70px;margin-top:-9px;">
+                        <label for="location_id" string=""/>
+                        <div class="text-muted mb16">
+                            Location
+                        </div>
+                    </div>
+                    <div class="">
+                        <field name="location_id" domain="[('usage', '=', 'inventory')]"/>
+                    </div>
+
+                </div>
+
+                <div style="clear:both"></div>
+
+                <div class="col-12" id="">
+                    <div class="o_setting_left_pane"
+                         style="width:70px;margin-top:-9px;font-size:12px;color:#000;margin-bottom:10px;">
+                        <label for="warehouse_id" string=""/>
+                        <div class="text-muted mb16">
+                            Warehouse
+                        </div>
+                    </div>
+                    <div class="">
+                        <field name="warehouse_id"/>
+                    </div>
+
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+
+
+
+
+</odoo>

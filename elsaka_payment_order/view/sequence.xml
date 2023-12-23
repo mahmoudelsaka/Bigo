@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="1">
+
+	<!-- Sequences for cost.distribution -->
+<!--	<record id="seq_type_receipt_order" model="ir.sequence.type">-->
+<!--		<field name="name">Receipt Order</field>-->
+<!--		<field name="code">receipt.order</field>-->
+<!--	</record>-->
+
+	<record id="seq_receipt_order" model="ir.sequence">
+		<field name="name">Receipt Order</field>
+		<field name="code">receipt.order</field>
+		<field name="prefix">RO/%(year)s/</field>
+		<field name="padding">3</field>
+		<field name="company_id" eval="False" />
+	</record>
+
+<!--&lt;!&ndash;	<record id="seq_type_payment_order" model="ir.sequence.type">&ndash;&gt;-->
+<!--&lt;!&ndash;		<field name="name">Payment Order</field>&ndash;&gt;-->
+<!--&lt;!&ndash;		<field name="code">payment.order</field>&ndash;&gt;-->
+<!--&lt;!&ndash;	</record>&ndash;&gt;-->
+
+	<record id="seq_payment_order" model="ir.sequence">
+		<field name="name">Payment Order</field>
+		<field name="code">payment.order</field>
+		<field name="prefix">PO/%(year)s/</field>
+		<field name="padding">3</field>
+		<field name="company_id" eval="False" />
+	</record>
+
+	</data>
+</odoo>

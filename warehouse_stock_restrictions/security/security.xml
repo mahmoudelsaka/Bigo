@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+    	<record id="group_restrict_warehouse" model="res.groups">
+            <field name="name">Restrict Stock warehouses</field>
+        </record>
+
+        <record id="filter_user_stock_picking_type_allowed_new" model="ir.rule">
+            <field name="name">Filter Stock Picking Type Allowed new</field>
+            <field name="model_id" search="[('model','=','stock.picking.type')]" model="ir.model"/>
+            <field name="groups" eval="[(4, ref('group_restrict_warehouse'))]"/>
+            <field name="domain_force">[('id','in', [ p.id for p in user.default_picking_type_ids ])]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <record id="filter_user_stock_quant_allowed_new" model="ir.rule">
+            <field name="name">Filter Stock Quant Allowed new</field>
+            <field name="model_id" search="[('model','=','stock.quant')]" model="ir.model"/>
+            <field name="groups" eval="[(4, ref('warehouse_stock_restrictions.group_restrict_warehouse'))]"/>
+            <field name="domain_force">[('location_id','in', [ p.id for p in user.stock_location_report_ids])]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <record id="filter_user_stock_move_line" model="ir.rule">
+            <field name="name">Filter Stock Move Line</field>
+            <field name="model_id" search="[('model','=','stock.move.line')]" model="ir.model"/>
+            <field name="groups" eval="[(4, ref('group_restrict_warehouse'))]"/>
+            <field name="domain_force">
+                ['|',('location_id','in', [ p.id for p in user.stock_location_report_ids ]),
+                ('location_dest_id','in', [ p.id for p in user.stock_location_report_ids ])]
+            </field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

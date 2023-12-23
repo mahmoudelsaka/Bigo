@@ -1,0 +1,74 @@
+<odoo>
+    <record id="sale_report_wizard_id_tax" model="ir.ui.view">
+        <field name="name"></field>
+        <field name="model">sale.tax.wizard</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="from_date" required="1"/>
+                        </group>
+
+                        <group>
+                            <field name="to_date" required="1"/>
+                            <field name="tax_id" required="1" domain="[('type_tax_use','=','sale')]"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="print_excel_report" type="object" string="Print"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="action_sale_tax_report_wizard_id">
+        <field name="name">Sales Tax Report</field>
+        <field name="res_model">sale.tax.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="sale_report_wizard_id_tax"/>
+        <field name="target">new</field>
+    </record>
+    <menuitem id="action_sale_tax_report_wizard_categ_id" name="Report Sales Tax"
+              parent="account.account_reports_legal_statements_menu" action="action_sale_tax_report_wizard_id"
+              sequence="400"/>
+
+
+
+     <record id="purchase_report_wizard_id_tax" model="ir.ui.view">
+        <field name="name"></field>
+        <field name="model">purchase.tax.wizard</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="from_date" required="1"/>
+                            <field name="is_withholding"/>
+
+                        </group>
+
+                        <group>
+                            <field name="to_date" required="1"/>
+                            <field name="tax_id" required="1" domain="[('type_tax_use','=','purchase')]"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="print_excel_report" type="object" string="Print"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="action_purchase_tax_report_wizard_id">
+        <field name="name">Purchase Tax Report</field>
+        <field name="res_model">purchase.tax.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="purchase_report_wizard_id_tax"/>
+        <field name="target">new</field>
+    </record>
+    <menuitem id="action_purchase_tax_report_wizard_categ_id" name="Report Purchase Tax"
+              parent="account.account_reports_legal_statements_menu" action="action_purchase_tax_report_wizard_id"
+              sequence="400"/>
+
+</odoo>

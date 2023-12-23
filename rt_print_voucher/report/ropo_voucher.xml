@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="report_ropo_voucher_document">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+
+                    <h2 style="text-align:center">
+                        <span t-if="o.name2">
+                            <span t-field="o.name2"/>
+                        </span>
+                    </h2>
+
+                    <br/>
+
+                    <table class="table table-condensed">
+                        <tbody class="sale_tbody">
+                            <t t-foreach="docs" t-as="o">
+                                <tr>
+                                    <td style="font-weight: bold;">Partner :</td>
+                                    <td>
+                                        <span t-field="o.partner_id"/>
+                                    </td>
+                                    <td style="font-weight: bold;">
+                                        Date :
+                                    </td>
+                                    <td>
+                                        <span t-field="o.date"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold;">
+                                        Unit :
+                                    </td>
+                                    <td>
+                                        <span t-field="o.unit_id.name"/>
+                                    </td>
+                                    <td style="font-weight: bold;">
+                                        Building :
+                                    </td>
+                                    <td>
+                                        <span t-field="o.building_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold;">
+                                        Project :
+                                    </td>
+                                    <td>
+                                        <span t-field="o.analytic_account_id.name"/>
+                                    </td>
+                                    <td style="font-weight: bold;">
+                                        Amount :
+                                    </td>
+                                    <td>
+                                        <span t-field="o.amount"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold;">
+                                        Label :
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-field="o.payment_ref"/>
+                                    </td>
+                                </tr>
+
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <div class="oe_structure"/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <span style="text-align:center; font-size:18px; margin-left:30px; inline:block;">Receipt By</span>
+                    <span style="text-align:center; font-size:18px; margin-left:240px; inline:block;">Accountant</span>
+                    <span style="text-align:center; font-size:18px; margin-left:200px; inline:block;">Accountant
+                        Manager
+                    </span>
+                </div>
+            </t>
+        </template>
+
+        <template id="report_ropo_voucher">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="rt_print_voucher.report_ropo_voucher_document" t-lang="o.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_account_move_form" model="ir.ui.view">
+            <field name="name">view.account.move.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet/group" position="after">
+                    <group attrs="{'invisible':[('move_type', 'not in', ('out_invoice', 'out_refund'))],'readonly': [('state', '!=', 'draft')]}">
+                        <group name="unit_info" string="Unit Info">
+                            <field name="partner_unit_ids" invisible="1" widget="many2many_tags"/>
+
+                            <field name="unit_id" domain="[('id', 'in', partner_unit_ids)]"
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="building_id"
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="analytic_account_id"
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="installment_type"
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>
+                    </group>
+                </xpath>
+
+                <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='account_id']" position="after">
+                    <field name="unit_id"/>
+                    <field name="building_id"/>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='account_id']" position="after">
+                    <field name="unit_id"/>
+                    <field name="building_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

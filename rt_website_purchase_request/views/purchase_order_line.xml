@@ -1,0 +1,19 @@
+<odoo>
+    <data>
+
+        <record id="add_filed_to_purchase_order_line" model="ir.ui.view">
+            <field name="name">add.filed.of.note.to.purchase.request</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='order_line']/tree//field[@name='name']" position="after">
+                        <field name="gl_account_id" domain="[('is_request', '=', True)]"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

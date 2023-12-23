@@ -1,0 +1,7 @@
+<odoo>
+    <data>
+        <record id="show_only_purchase_request" model="res.groups">
+            <field name="name">Show only purchase request</field>
+        </record>
+    </data>
+</odoo>

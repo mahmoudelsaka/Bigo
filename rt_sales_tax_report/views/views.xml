@@ -1,0 +1,67 @@
+<odoo>
+
+
+    <record id="inherit_account_journal_form_id" model="ir.ui.view">
+        <field name="name">account.journal.form</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='type']" position="after">
+                <field name="doc_type" attrs="{'invisible': [('type', 'not in',['sale','purchase'])]}"
+                       placeholder="نوع المستند(فاتوره 1/اشعار اضافه 2/اشعار خصم 3/مستهلك نهائي محلي 5/جهة حكومة 6/مستهلك نهائي اجنبي 7)"/>
+                <field name="tax_type" attrs="{'invisible': [('type', 'not in',['sale','purchase'])]}"
+                       placeholder="سلع عامه 1/سلع جدول 2"/>
+                <field name="goods_type" attrs="{'invisible': [('type', 'not in',['sale','purchase'])]}"
+                       placeholder="لا يوجد 0/جدول اولا 1/جدول ثانيا 2"/>
+                <field name="good_type" attrs="{'invisible': [('type', 'not in',['sale','purchase'])]}"
+                       placeholder="محلي 1/صادرات 2/الات ومعدات 5/اجزاء الات 6/اعفاءات 7/سلع الجدول مراجعة الارشادات"/>
+                <field name="tax_product" attrs="{'invisible': [('type', 'not in',['sale','purchase'])]}"
+                       placeholder="اسم المنتج"/>
+                <field name="report_number" attrs="{'invisible': [('type', 'not in',['sale','purchase'])]}"
+                       placeholder="سلعة 3/خدمه 4/تسويات 5"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- Inherit Form View to Modify it -->
+    <record id="account_move_inherit-id" model="ir.ui.view">
+        <field name="name">account.move,form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//page[3]" position="after">
+                <page string="Sales Tax">
+                    <group>
+                        <field name="doc_type"
+                               placeholder="نوع المستند(فاتوره 1/اشعار اضافه 2/اشعار خصم 3/مستهلك نهائي محلي 5/جهة حكومة 6/مستهلك نهائي اجنبي 7)"/>
+                        <field name="tax_type" placeholder="سلع عامه 1/سلع جدول 2"/>
+                        <field name="goods_type" placeholder="لا يوجد 0/جدول اولا 1/جدول ثانيا 2"/>
+                        <field name="good_type"
+                               placeholder="محلي 1/صادرات 2/الات ومعدات 5/اجزاء الات 6/اعفاءات 7/سلع الجدول مراجعة الارشادات"/>
+                        <field name="tax_file_number" placeholder="رقم الملف الضريبي للعميل"/>
+                        <field name="tax_product" placeholder="اسم المنتج"/>
+                        <field name="report_number" placeholder="سلعة 3/خدمه 4/تسويات 5"/>
+                    </group>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="res_partner_inherit_form_id" model="ir.ui.view">
+        <field name="name"></field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="tax_file_number" placeholder="رقم الملف الضريبي"/>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

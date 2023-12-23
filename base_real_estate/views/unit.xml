@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="state_building_action" model="ir.actions.act_window">
+            <field name="name">Phases</field>
+            <field name="res_model">crm.building.state</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- building form view -->
+        <record id="state_building_form_view" model="ir.ui.view">
+            <field name="name">state.building.form</field>
+            <field name="model">crm.building.state</field>
+            <field name="arch" type="xml">
+                <form class="oe_form_configuration">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <label for="name" string="Building Name"/>
+                            </h1>
+                            <h3>
+                                <field name="name" placeholder="Building Name" required="True"/>
+                            </h3>
+                            <h1>
+                                <label for="code" string="code"/>
+                            </h1>
+                            <h3>
+                                <field name="code"/>
+                            </h3>
+                            <h1>
+                                <label for="analytic_account_id" string="analytic"/>
+                            </h1>
+                            <h3>
+                                <field name="analytic_account_id"/>
+                            </h3>
+                            <h1>
+                                <label for="analytic_account_id" string="Company"/>
+                            </h1>
+                            <h3>
+                                <field name="company_id"/>
+                            </h3>
+                        </div>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- unit action -->
+        <record id="state_unit_action" model="ir.actions.act_window">
+            <field name="name">Plots</field>
+            <field name="res_model">crm.unit.state</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- unit tree view -->
+        <record id="state_unit_tree_view" model="ir.ui.view">
+            <field name="name">state.unit.form</field>
+            <field name="model">crm.unit.state</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <!-- Main Fields -->
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="analytic_account_id" optional="hide"/>
+                    <field name="building_id"/>
+
+                    <!-- Unit Pricing Fields -->
+                    <field name="unit_price"/>
+                    <field name="club_price" optional="hide"/>
+                    <field name="garage_price" optional="hide"/>
+                    <field name="finishing_price"/>
+                    <field name="company_id" optional="show"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- unit form view -->
+        <record id="state_unit_form_view" model="ir.ui.view">
+            <field name="name">state.unit.form</field>
+            <field name="model">crm.unit.state</field>
+            <field name="arch" type="xml">
+                <form class="oe_form_configuration">
+
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <label for="name" string="Unit Name"/>
+                            </h1>
+                            <h3>
+                                <field name="name" placeholder="Unit Name"
+                                       style="font-family:Gill Sans sans-serif;font-size:40px;font-style:italic;color:#042D32"/>
+                            </h3>
+                        </div>
+                        <group>
+                            <group name="main_info" string="Main Info">
+                                <field name="code" placeholder="Unit Code" force_save="1"/>
+                                <field name="analytic_account_id" force_save="1"/>
+                                <field name="building_id" force_save="1"/>
+                            </group>
+                            <group name="price_group" string="Pricing">
+                                <field name="unit_price" force_save="1"/>
+                                <field name="club_price" force_save="1"/>
+                                <field name="garage_price" force_save="1"/>
+                                <field name="finishing_price" force_save="1"/>
+                                <field name="company_id" force_save="1"/>
+                                <field name="currency_id" force_save="1"/>
+                            </group>
+                        </group>
+
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

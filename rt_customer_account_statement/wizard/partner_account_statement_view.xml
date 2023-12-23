@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="partner_check_report_form" model="ir.ui.view">
+            <field name="name">partner.check.report.wizard.form</field>
+            <field name="model">partner.statement.report</field>
+            <field name="arch" type="xml">
+                <form string="Stock Card">
+                    <sheet>
+                        <field name="excel_flag" invisible="1"/>
+                        <group>
+                            <group>
+                                <field name="partner_id"/>
+                            </group>
+                            <group>
+                                <field name="unit_id"/>
+                            </group>
+                        </group>
+
+                        <group attrs="{'invisible': [('excel_flag','!=',True)]}">
+                            <p>Excel file format:
+                                <field name="excelfile" readonly="1" filename="file_name"/>
+                                <field name="file_name" invisible="1"/>
+                            </p>
+                        </group>
+                        <footer>
+                            <button name="generate_check_excel_report" string="Generate"
+                                    type="object" class="oe_highlight"/>
+                            or
+
+                            <button special="cancel" string="Cancel" class="oe_link"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_partner_check_report_wiz_excel" model="ir.actions.act_window">
+            <field name="name">Partner Statement Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">partner.statement.report</field>
+            <!--		<field name="view_type">form</field>-->
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="partner_check_report_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_partner_check_report_wizard" sequence="10"
+                  action="action_partner_check_report_wiz_excel" parent="account.menu_finance_reports"/>
+
+    </data>
+</odoo>

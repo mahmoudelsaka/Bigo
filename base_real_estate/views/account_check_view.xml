@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+         <!-- Inherit Account Check Form View -->
+        <record id="view_account_check_form" model="ir.ui.view">
+            <field name="model">account.check</field>
+            <field name="inherit_id" ref="rt_account_check.view_account_check_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group/group[2]" position="after">
+                    <group name="state_info">
+                        <field name="unit_id"/>
+                        <field name="analytic_account_id"/>
+                        <field name="building_id"/>
+                        <field name="is_old_check"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

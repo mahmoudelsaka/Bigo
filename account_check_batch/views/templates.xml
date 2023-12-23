@@ -1,0 +1,20 @@
+<odoo>
+    <data>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_bank_statement_form" model="ir.ui.view">
+            <field name="name">view.bank.statement.form</field>
+            <field name="model">account.bank.statement</field>
+            <field name="inherit_id" ref="account_accountant.view_bank_statement_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//header/button[@name='action_bank_reconcile_bank_statements']" position="attributes">
+                    <!-- Add your fields or attributes here -->
+                    <attribute name="attrs">{'invisible':['|',('all_lines_reconciled', '=', True), ('line_ids','=',[])]}</attribute>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

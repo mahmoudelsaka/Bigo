@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+<!--<template id="report_ropo_voucher_document">-->
+<!--	<t t-call="web.external_layout">-->
+<!--		<div class="page">-->
+<!--			<div class="oe_structure" />-->
+
+<!--			<h2 style="text-align:center">-->
+<!--				<span t-if="o.amount &lt; 0">Payment Voucher</span>-->
+<!--				<span t-if="o.amount &gt; 0">Receipt Voucher</span>-->
+<!--			</h2>-->
+
+<!--			<br></br>-->
+
+<!--			<div class="row">-->
+<!--				<div class="col-xs-5">-->
+<!--					<strong style="text-align:center; margin-left:100px">Partner:</strong>-->
+<!--					<span t-field="o.partner_id"-->
+<!--					t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'-->
+<!--					style="text-align:center; margin-left:100px"/>-->
+<!--					<br></br>-->
+<!--				</div>-->
+<!--				<div class="col-xs-6 col-xs-offset-1">-->
+<!--					<table style="text-align:center; margin-left:80px">-->
+<!--						<tr>-->
+<!--							<td style="width:40%;font-weight:bold;">Communication:</td>-->
+<!--							<td style="width:60%">-->
+<!--									-->
+<!--								<span t-field="o.name" />-->
+<!--							</td>-->
+<!--						</tr>-->
+<!--						<tr>-->
+<!--							<td style="width:40%;font-weight:bold;">Date:</td>-->
+<!--							<td style="width:60%">-->
+
+<!--								<span t-field="o.date" />-->
+<!--							</td>-->
+<!--						</tr>-->
+<!--						<tr>-->
+<!--							<td style="width:40%;font-weight:bold;">Reference:</td>-->
+<!--							<td style="width:60%">-->
+
+<!--								<span t-field="o.ref" />-->
+<!--							</td>-->
+<!--						</tr>-->
+<!--						<tr>-->
+<!--							<td style="width:40%;font-weight:bold;">Amount:</td>-->
+<!--							<td style="width:60%">-->
+
+<!--								<span t-field="o.amount" />-->
+<!--							</td>-->
+<!--						</tr>-->
+<!--					</table>-->
+<!--				</div>-->
+<!--			</div>-->
+
+<!--			<div class="oe_structure" />-->
+<!--		</div>-->
+<!--	</t>-->
+<!--</template>-->
+
+<!--<template id="report_ropo_voucher">-->
+<!--	<t t-call="web.html_container">-->
+<!--		<t t-foreach="docs" t-as="o">-->
+<!--			<t t-call="elsaka_payment_order.report_ropo_voucher_document" t-lang="o.partner_id.lang" />-->
+<!--		</t>-->
+<!--	</t>-->
+<!--</template>-->
+	</data>
+</odoo>

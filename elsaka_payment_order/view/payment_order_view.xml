@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="receipt_order_form">
+            <field name="name">receipt.order.form</field>
+            <field name="model">receipt.order</field>
+            <field name="arch" type="xml">
+                <form string="Receipt Order">
+                    <header>
+                        <button name="action_first_approved" string="First Approval"
+                                type="object" states="draft"/>
+                        <button name="action_second_approved" string="Second Approval"
+                                type="object" states="first_approved"
+                                groups="elsaka_payment_order.group_ro_po_first_approver"/>
+                        <button name="action_approved" string="Approve"
+                                states="second_approved" type="object"
+                                groups="elsaka_payment_order.group_ro_po_second_approver"/>
+
+                        <button name="action_done" string="Done"
+                                states="approved" type="object"
+                                groups="elsaka_payment_order.group_ro_po_approve"/>
+                        <button name="action_cancel" string="Cancel" type="object"
+                                states="draft,first_approved,second_approved"/>
+                        <button name="action_reset" string="Reset" type="object"
+                                states="cancel"/>
+
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,first_approved,second_approved,approved"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_transaction" type="object"
+                                    icon="fa-list"
+                                    class="oe_stat_button">
+                                <field name="count_transactions" widget="statinfo" string="Transactions"/>
+                            </button>
+                        </div>
+                        <h1>
+                            <field name="name" readonly="1" class="oe_inline"/>
+                        </h1>
+                        <group>
+                            <group>
+                                <field name="partner_id" options='{"always_reload": True}'/>
+                                <field name="journal_id" states="approved,second_approved"
+                                       options="{'no_create':True, 'no_edit':True, 'no_create_edit': True, 'no_open': True,}"/>
+                                <field name="statement_id" invisible="1"/>
+                                <field name="amount"/>
+                                <field name="memo"/>
+                                <field name="ref"/>
+                            </group>
+                            <group>
+                                <field name="due_date"/>
+                                <!--							<field name="period_id"/>-->
+                                <field name="create_date" readonly="1"/>
+                                <field name="type"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                                <field name="currency_id"/>
+                                <field name="created_by" invisible="1"/>
+                            </group>
+
+                            <group name="account_gp" string="Other Information">
+                                <field name="account_id"/>
+                            </group>
+                        </group>
+                        <field name="note" placeholder="Internal Notes..."/>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="receipt_order_tree">
+            <field name="name">receipt.order.tree</field>
+            <field name="model">receipt.order</field>
+            <field name="arch" type="xml">
+                <tree string="Orders">
+                    <field name="name"/>
+                    <field name="ref"/>
+                    <field name="partner_id"/>
+                    <field name="due_date"/>
+                    <field name="type"/>
+					<field name="journal_id"/>
+                    <field name="account_id"/>
+					<field name="statement_id" invisible="1"/>
+                    <field name="memo"/>
+                    <field name="amount"/>
+                    <field name="created_by"/>
+                    <field name="currency_id"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="receipt_order_search">
+            <field name="name">receipt.order.search</field>
+            <field name="model">receipt.order</field>
+            <field name="arch" type="xml">
+                <search string="Orders">
+                    <field name="name"/>
+                    <field name="ref"/>
+                    <field name="partner_id"/>
+<!--                    <field name="statement_id"/>-->
+					<field name="journal_id"/>
+                    <field name="account_id"/>
+                    <field name="memo"/>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_receipt_order">
+            <field name="name">Receipt Order</field>
+            <field name="res_model">receipt.order</field>
+            <!--		<field name="view_type">form</field>-->
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'default_type': 'receipt'}</field>
+            <field name="domain">[('type','=','receipt')]</field>
+        </record>
+
+        <menuitem action="action_receipt_order" id="menu_elsaka_receipt_order"
+                  parent="account.menu_finance"/>
+
+        <record model="ir.actions.act_window" id="action_payment_order">
+            <field name="name">Payment Order</field>
+            <field name="res_model">receipt.order</field>
+            <!--		<field name="view_type">form</field>-->
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'default_type': 'payment'}</field>
+            <field name="domain">[('type','=','payment')]</field>
+        </record>
+
+        <menuitem name="Treasury"
+        id="account.menu_finance"/>
+<!--        groups="account.group_account_readonly,account.group_account_invoice"-->
+
+        <menuitem action="action_payment_order" id="menu_payment_order_elsaka"
+                  parent="account.menu_finance"/>
+
+
+         <!-- CASH REGISTER FORM VIEW -->
+<!--        <record id="view_bank_statement_form2" model="ir.ui.view">-->
+<!--            <field name="name">account.bank.statement.form2</field>-->
+<!--            <field name="model">account.bank.statement</field>-->
+<!--            <field name="inherit_id" ref="account.view_bank_statement_form"/>-->
+<!--            <field name="priority">3</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <xpath expr="//button[@name='button_validate_or_action']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//button[@name='button_post']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--        </record>-->
+
+
+    </data>
+</odoo>

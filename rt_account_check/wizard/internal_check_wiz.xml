@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data>
+        <record id="internal_check_wizard_view" model="ir.ui.view">
+            <field name="name">view.account.payment.internal.check.form</field>
+            <field name="model">account.payment.internal.check</field>
+            <field name="arch" type="xml">
+                <form string="Internal Checks">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="check_state" required="1" invisible="0"/>
+                                <field name="transfer_state"
+                                attrs="{'invisible':[('check_state','not in',['transfered','handed'])],'required': ['|',('check_state','=','transfered'),('check_state','=','handed')]}"/>
+                                <field name="holding_state"
+                                attrs="{'invisible':[('check_state','not in',('deposited','holding'))],'required': [('check_state','in',('deposited','holding'))]}"/>
+<!--                                <field name="reject_state"-->
+<!--                                attrs="{'invisible':[('check_state','!=','rejected')],'required': [('check_state','=','rejected')]}"/>-->
+
+                                <field name="destination_journal_id"
+                                       attrs="{'invisible':['|',('transfer_state','in',['returned','delivered','rejected','deposited','selled','cashed']),('holding_state','in',['delivered','rejected','selled','cashed'])]}"
+                                       options="{'no_create': True,'no_create_edit':True,'no_open':True}"/>
+                                <field name="treasury_id"
+                                       attrs="{'invisible':['|',('transfer_state','in',['returned','delivered','cashed','rejected','deposited','holding']),('holding_state','in',['delivered','cashed','rejected','transfered'])],'required':['|',('transfer_state','in',['selled']),('holding_state','in',['selled'])]}"
+                                       options="{'no_create': True,'no_create_edit':True,'no_open':True}"/>
+                                <field name="destination_account_id"
+                                       attrs="{'invisible':['|',('holding_state','in',['rejected','selled','transfered']),('transfer_state','in',['returned','selled','holding','rejected','deposited'])],'required':['|',('transfer_state','in',['delivered','cashed']),('holding_state','in',['delivered','cashed'])]}"
+                                       options="{'no_create': True,'no_create_edit':True,'no_open':True}"/>
+                            </group>
+                            <group>
+                                <field name="partner_id" attrs="{'invisible':['|',('holding_state','in',['rejected','transfered','selled']),('transfer_state','in',['returned','deposited','rejected','selled','holding'])],'required':['|',('transfer_state','in',['delivered','cashed']),('holding_state','in',['delivered','cashed'])]}"
+                                options="{'no_create': True,'no_create_edit':True,'no_open':True}"/>
+                                <field name="date" required="1"/>
+                            </group>
+                        </group>
+                        <footer>
+                            <button name="create_internal_entries" string="Confirm" type="object"
+                                    class="oe_highlight"/>
+                            <button special="cancel" string="Cancel" class="oe_link"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="account_check_internal_transfer" model="ir.actions.act_window">
+            <field name="name">Internal Transfer</field>
+            <field name="res_model">account.payment.internal.check</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="internal_check_wizard_view"/>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="rt_account_check.model_account_check"/>
+            <field name="binding_view_types">list,form</field>
+        </record>
+    </data>
+</odoo>

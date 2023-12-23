@@ -1,0 +1,27 @@
+<odoo>
+    <data>
+        <template id="account_reports.main_template_with_filter_input_partner"
+                  inherit_id="account_reports.main_template_with_filter_input_accounts" primary="True">
+            <xpath expr="//input[hasclass('o_account_reports_filter_input')]" position="attributes">
+                <attribute name="placeholder">Search Partner</attribute>
+            </xpath>
+            <xpath expr="//input[hasclass('o_account_reports_filter_input')]" position="after">
+                <div class="o_reports_filter_input_wrapper no_print" t-if="lines.get('lines')">
+                    <span class="searchIcon">
+                        <i class="fa fa-search" role="img" aria-label="Search" title="Search"></i>
+                    </span>
+                    <input class="o_account_reports_filter_input" type="text" placeholder="Search Account"/>
+                </div>
+            </xpath>
+        </template>
+
+        <!--        <template id="main_template_with_filterr_input_accounts" inherit_id="account_reports.main_template_with_filter_input_accounts"  primary="True">-->
+        <!--            <xpath expr="//input[hasclass('o_account_reports_filter_input')]" position="after">-->
+        <!--                <div class="o_reports_filter_input_wrapper no_print">-->
+        <!--                    <span class="searchIcon"><i class="fa fa-search" role="img" aria-label="Search" title="Search"></i></span>-->
+        <!--                    <input class="o_account_reports_filter_input" type="text" placeholder="Search account" />-->
+        <!--                </div>-->
+        <!--            </xpath>-->
+        <!--    </template>-->
+    </data>
+</odoo>

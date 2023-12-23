@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!--  -->
+        <template id="report_check_batch_doc">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+
+                    <!--======================> Customer Cheque Information <========================-->
+
+                    <h1 class="text-center">
+                        <span>Customer Cheques</span>
+                    </h1>
+                    <table class="table table-condensed">
+                        <t t-foreach="docs" t-as="doc">
+                            <tbody class="sale_body">
+                                <tr>
+                                    <td style="color:#323748; font-size:20px" class="font-weight-bold">
+                                        Customer:
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.partner_id.name"/>
+                                    </td>
+                                    <td style="color:#323748; font-size:20px" class="font-weight-bold">
+                                        Bank:
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.bank_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="color:#323748; font-size:20px" class="font-weight-bold">
+                                        Issue Date:
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.issue_date"/>
+                                    </td>
+                                    <td style="color:#323748; font-size:20px" class="font-weight-bold">
+                                        Number Of Cheques:
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.count_check"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="color:#323748; font-size:20px" class="font-weight-bold">
+                                        Project:
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.analytic_account_id.name"/>
+                                    </td>
+                                    <td style="color:#323748; font-size:20px" class="font-weight-bold">
+                                        Building:
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.building_id.name"/>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td style="color:#323748; font-size:20px" class="font-weight-bold">
+                                        Unit:
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.unit_id.name"/>
+                                    </td>
+                                    <td style="color:#323748; font-size:20px" class="font-weight-bold">
+                                        <!--                                        Unit Price:-->
+                                    </td>
+                                    <td>
+                                        <!--                                        <span t-field="doc.amount"/>-->
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </t>
+                    </table>
+                    <br></br>
+
+                    <table class="table table-condensed">
+                        <thead style="background-color:gray;">
+                            <tr>
+                                <th class="text-center" style="border:1px solid">Cheque Number</th>
+                                <th class="text-center" style="border:1px solid">Due Date</th>
+                                <th class="text-center" style="border:1px solid">Amount</th>
+                                <th class="text-center" style="border:1px solid">Payment For</th>
+                            </tr>
+                        </thead>
+                        <t t-foreach="docs" t-as="doc">
+                            <tbody class="sale_tbody">
+                                <t t-set="total_amount" t-value="0.0"/>
+                                <t t-foreach="doc.check_batch_line" t-as="cbl">
+                                    <tr>
+                                        <td width="25%" class="text-center" style="border:1px solid">
+                                            <span>
+                                                <t t-esc="str(cbl.check_no)"/>
+                                            </span>
+                                        </td>
+                                        <td width="25%" class="text-center" style="border:1px solid">
+                                            <span t-field="cbl.check_payment_date"/>
+                                        </td>
+                                        <td width="25%" class="text-center" style="border:1px solid">
+                                            <span t-field="cbl.amount"/>
+                                        </td>
+                                       
+                                    </tr>
+                                    <t t-set="total_amount" t-value="total_amount + cbl.amount"/>
+                                </t>
+                                <br></br>
+                                <tr style="background-color:grey">
+                                    <td width="25%"></td>
+                                    <td width="25%" class="text-center font-weight-bold">
+                                        <strong>Total Amount:</strong>
+                                    </td>
+                                    <td width="25%" class="text-center">
+                                        <strong>
+                                            <span>
+                                                <t t-esc="total_amount"/>
+                                            </span>
+                                        </strong>
+                                    </td>
+                                    <td width="25%"></td>
+                                </tr>
+                            </tbody>
+                        </t>
+                    </table>
+                </div>
+            </t>
+        </template>
+
+
+        <template id="report_check_batch_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="account_check_batch.report_check_batch_doc" t-lang="doc.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+
+
+        <record id="paperformat_cheque_batch" model="report.paperformat">
+            <field name="name">Cheque Format</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">297</field>
+            <field name="page_width">210</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">15</field>
+            <field name="margin_bottom">1</field>
+            <field name="margin_left">1</field>
+            <field name="margin_right">1</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">10</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="action_report_check_batch_report" model="ir.actions.report">
+            <field name="name">Cheque Batch</field>
+            <field name="model">account.check.batch</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">account_check_batch.report_check_batch_report</field>
+            <field name="report_file">account_check_batch.report_check_batch_report</field>
+            <field name="print_report_name">'Customer Cheque - %s - %s - %s - %s' %(object.partner_id.name,object.analytic_account_id.name, object.building_id.name, object.unit_id.name)
+            </field>
+            <field name="binding_model_id" ref="account_check_batch.model_account_check_batch"/>
+            <field name="paperformat_id" ref="account_check_batch.paperformat_cheque_batch"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

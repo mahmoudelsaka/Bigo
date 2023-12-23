@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="productSearch">
+        <div class="row">
+            <div class="form>">
+                <form role="form" action="/create/po_line" method="post">
+                    <input type="hidden" name="id" t-att-value="id"/>
+                    <div class="form-row">
+                        <div class="row">
+                            <div class="my_select_product my_select_product_val col-md-3 form-group">
+                                <label for="product_id">Product</label>
+                                <select name="product_id" data-live-search="true" class="form-control select_class"
+                                        required="required" id="product_name_val">
+                                    <option></option>
+                                    <t t-foreach="result" t-as="o">
+                                        <option t-esc="o.display_name" t-att-value="o.id"
+                                                required="required"/>
+                                    </t>
+                                </select>
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                <label for="description">Description</label>
+                                <input type="text" class="form-control" id="description"
+                                       name="description"
+                                       t-att-value="description"/>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="product_qty">Qty</label>
+                                <input type="number" class="form-control" id="product_qty"
+                                       name="product_qty" step="any"
+                                       t-att-value="product_qty"/>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="price_unit">Price Unit</label>
+                                <input type="number" class="form-control" id="price_unit" name="price_unit"
+                                       t-att-value="price_unit"/>
+                            </div>
+                            <div class="form-group col-md-1">
+                                <button type="create" class="btn btn-secondary text-center"
+                                        style="margin-top: 24px;">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </t>
+</templates>

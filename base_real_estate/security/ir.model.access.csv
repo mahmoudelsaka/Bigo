@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_crm_unit_state,crm_unit_state,model_crm_unit_state,base.group_user,1,1,1,1
+access_crm_building_state,crm_unit_state,model_crm_building_state,base.group_user,1,1,1,1
+access_crm_invoice_update,crm_invoice_update,model_invoice_update,base.group_user,1,1,1,1
+access_partner_unit,partner unit,model_partner_unit_line,base.group_user,1,1,1,1

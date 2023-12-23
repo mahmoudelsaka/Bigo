@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="receipt_order_form_inherit">
+            <field name="name">receipt.order.form.inherit</field>
+            <field name="model">receipt.order</field>
+            <field name="inherit_id" ref="elsaka_payment_order.receipt_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="unit_id"/>
+                    <field name="analytic_account_id"/>
+                    <field name="building_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,54 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="purchase_request.purchase_request_type">
+            <field name="name">purchase request type list</field>
+            <field name="model">purchase.request.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="product_type"/>
+                    <field name="is_engineering"/>
+                    <field name="is_exception"
+                           groups="purchase.group_purchase_manager,purchase_request.group_purchase_request_manager"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="purchase_request.purchase_request_type_form">
+            <field name="name">purchase request type from</field>
+            <field name="model">purchase.request.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="product_type"/>
+                            <field name="is_engineering"/>
+                            <field name="is_exception"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="purchase_request.action_window">
+            <field name="name">action window</field>
+            <field name="res_model">purchase.request.type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <menuitem
+                id="menu_1_list"
+                name="Type"
+                parent="purchase_request.menu_purchase_request"
+                action="purchase_request.action_window"
+                groups="purchase.group_purchase_manager,purchase_request.group_purchase_request_manager"
+                sequence="30"
+        />
+
+
+    </data>
+</odoo>

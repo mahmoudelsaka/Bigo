@@ -1,0 +1,112 @@
+<odoo>
+    <template id="po_orders" name="Po Orders">
+        <style>
+            .create_purchase{
+            margin:10px 0px;
+            }
+            .label_default{
+            padding : 5px;
+            color : #fff;
+            border-radius : 5px;
+            font-size : 12px;
+            }
+            .label_default{
+            background-color : #ffc107;
+            }
+            .label_approve{
+            background-color : #0dcaf0;
+            }
+
+            .label_approved{
+            background-color : #0d6efd;
+            }
+            .label_reject{
+            background-color : #dc3545;
+            }
+            .label_done{
+            background-color : #198754;
+            }
+            .label_cancel{
+            background-color : #d9534f;
+            }
+        </style>
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="header">
+                    <a class="btn btn-primary create_purchase" href="/create_po_web_order">Create</a>
+                </div>
+                <div class="containt">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Po Name</th>
+                                <th scope="col">Po Vendor</th>
+                                <th scope="col">Creation Date</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">States</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="orders" t-as="order">
+                                <tr>
+                                    <th scope="row">
+                                        1
+                                    </th>
+                                    <td>
+                                        <a t-attf-href="/po/info/{{ order.id }}">
+                                            <t t-esc="order.name"/>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <t t-esc="order.requested_by.name"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="order.date_start"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="order.type.name"/>
+                                    </td>
+                                    <td>
+                                        <t t-if="order.state == 'draft'">
+                                            <span class="label label-default label_default">
+                                                Draft
+                                            </span>
+                                        </t>
+                                        <t t-if="order.state == 'to_approve'">
+                                            <span class="label label-default label_default label_default label_approve">
+                                                To approve
+                                            </span>
+                                        </t>
+                                        <t t-if="order.state == 'approved'">
+                                            <span class="label label-default label_default label_approved">
+                                                Approved
+                                            </span>
+                                        </t>
+                                        <t t-if="order.state == 'rejected'">
+                                            <span class="label label-default label_default label_reject">
+                                                Reject
+                                            </span>
+                                        </t>
+                                        <t t-if="order.state == 'done'">
+                                            <span class="label label-default label_default label_done">
+                                                Done
+                                            </span>
+                                        </t>
+
+                                        <t t-if="order.state == 'cancel'">
+                                            <span class="label  label_cancel">
+                                                Cancel
+                                            </span>
+                                        </t>
+
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

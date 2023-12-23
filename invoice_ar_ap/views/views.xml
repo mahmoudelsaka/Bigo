@@ -1,0 +1,35 @@
+<odoo>
+    <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_account_move_form" model="ir.ui.view">
+            <field name="name">view.account.move.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet/group/group[@id='header_left_group']/field[@name='partner_id']" position="after">
+                    <label for="ar_ap_account_id" string="Account Receivable" style="font-weight:bold;"
+                           attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund', 'out_receipt'))]}" />
+                    <label for="ar_ap_account_id" string="Account Payable" style="font-weight:bold;"
+                           attrs="{'invisible': [('move_type', 'not in', ('in_invoice', 'in_refund', 'in_receipt'))]}"/>
+                    <field name="ar_ap_account_id" nolabel="1"/>
+
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+		               <attribute name="attrs">{'required': [('move_type', '!=', 'entry')]}</attribute>
+
+		        </xpath>
+            </field>
+        </record>
+         <record id="inherit_chart_accountAt" model="ir.ui.view">
+        <field name="name">account.account.chart</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='accounting']/group/group[1]" position="inside">
+                <field name="installment_type"/>
+            </xpath>
+        </field>
+    </record>
+
+    </data>
+</odoo>

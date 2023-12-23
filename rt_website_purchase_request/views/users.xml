@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+
+        <record id="add_filed_of_is_purchase_to_user" model="ir.ui.view">
+            <field name="name">add.filed.of.is.purchase.to.user</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <field name="tz" position="after">
+                    <field name="is_purchase"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</odoo>

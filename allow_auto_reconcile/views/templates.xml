@@ -1,0 +1,51 @@
+<odoo>
+    <data>
+        <record id="res_config_settings_view_form" model="ir.ui.view">
+            <field name="name">res.config.settings.inherit</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@id='account_check']/div[2]/div[2]/div[1]" position="after">
+                    <div class="row mt16">
+                        <label for="installment_account_id" class="col-md-3 o_light_label"/>
+                        <field name="installment_account_id"/>
+                    </div>
+                    <div class="row mt16">
+                        <label for="receivable_check_account_id" class="col-md-3 o_light_label"/>
+                        <field name="receivable_check_account_id"/>
+                    </div>
+                    <div class="row mt16">
+                        <label for="old_receivable_check_account_id" class="col-md-3 o_light_label"/>
+                        <field name="old_receivable_check_account_id"/>
+                    </div>
+                </xpath>
+
+                <xpath expr="//div[@id='import_bank_statements_csv']/div[1]" position="before">
+                    <div class="o_setting_left_pane">
+                    </div>
+                    <div class="o_setting_left_pane">
+                        <field name="invoice_auto_reconcile" widget="upgrade_boolean"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="invoice_auto_reconcile" string="Auto Reconcile(Invoices)"/>
+                        <div class="text-muted">
+                            Auto Reconcile Invoice
+                        </div>
+                    </div>
+
+                    <div class="o_setting_left_pane">
+                        <field name="entry_auto_reconcile" widget="upgrade_boolean"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="entry_auto_reconcile" string="Auto Reconcile(Entries)"/>
+                        <div class="text-muted">
+                            Auto Reconcile Entries
+                        </div>
+                    </div>
+
+
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

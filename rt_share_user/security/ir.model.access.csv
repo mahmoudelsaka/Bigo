@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_rt_share_user/opt/odoo_16/custom_addons/_rt_share_user/opt/odoo_16/custom_addons/,rt_share_user/opt/odoo_16/custom_addons/.rt_share_user/opt/odoo_16/custom_addons/,model_rt_share_user/opt/odoo_16/custom_addons/_rt_share_user/opt/odoo_16/custom_addons/,base.group_user,1,1,1,1

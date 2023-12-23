@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_account_check_batch_form" model="ir.ui.view">
+            <field name="name">view.account.check.batch.form</field>
+            <field name="model">account.check.batch</field>
+            <field name="inherit_id" ref="account_check_batch.view_account_check_batch_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//group/group[@name='check_info']" position="after">
+                    <!-- Add your fields or attributes here -->
+                    <field name="partner_unit_ids" widget="many2many_tags" invisible="1"/>
+                    <group>
+                        <field name="unit_id" domain="[('id', 'in', partner_unit_ids)]"/>
+                        <field name="analytic_account_id"/>
+                        <field name="building_id"/>
+                    </group>
+                </xpath>
+                <xpath expr="//group/group[@name='check_info']/div/field[@name='start']" position="after">
+                    <button name="generate_check_number" type="object" string="Update Check No."/>
+                </xpath>
+                <xpath expr="//notebook/page[@name='check_batch_line']/field[@name='check_batch_line']/tree/field[@name='payment_type']"
+                       position="after">
+                    <field name="analytic_account_id"/>
+                    <field name="building_id"/>
+                    <field name="unit_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

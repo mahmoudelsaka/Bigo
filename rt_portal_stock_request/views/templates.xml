@@ -1,0 +1,16 @@
+<odoo>
+    <template id="create_stock_request_from_portal" name="Create Stock Request" inherit_id="portal.portal_my_home"
+              customize_show="True" priority="10">
+        <xpath expr="//div[hasclass('list-group')]" position="inside">
+            <t t-if="request.env.user.is_stock">
+                <div class="create_stock_request_from_portal">
+                    <a class="list-group-item list-group-item-action d-flex align-items-center justify-content-between"
+                       href="/sr/orders" title="Create Purchase Request">
+                        Stock Requests
+                    </a>
+                </div>
+            </t>
+
+        </xpath>
+    </template>
+</odoo>

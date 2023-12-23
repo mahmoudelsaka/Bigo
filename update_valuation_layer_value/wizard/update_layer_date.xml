@@ -1,0 +1,29 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="update_stock_layer_date">
+        <field name="name">update.stock.layer.date.</field>
+        <field name="model">update.layer.date</field>
+        <field name="arch" type="xml">
+            <form string="Update Date">
+                <sheet>
+                    <group>
+                        <field name="date"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Update Date" name="update_layer_date" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_update_layer_date" model="ir.actions.act_window">
+            <field name="name">Update Date</field>
+            <field name="res_model">update.layer.date</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="stock_account.model_stock_valuation_layer"/>
+        </record>
+    </data>
+</odoo>

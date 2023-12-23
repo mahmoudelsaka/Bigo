@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="allow_auto_reconcile.list">
+      <field name="name">allow_auto_reconcile list</field>
+      <field name="model">allow_auto_reconcile.allow_auto_reconcile</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="allow_auto_reconcile.action_window">
+      <field name="name">allow_auto_reconcile window</field>
+      <field name="res_model">allow_auto_reconcile.allow_auto_reconcile</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="allow_auto_reconcile.action_server">
+      <field name="name">allow_auto_reconcile server</field>
+      <field name="model_id" ref="model_allow_auto_reconcile_allow_auto_reconcile"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="allow_auto_reconcile" id="allow_auto_reconcile.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="allow_auto_reconcile.menu_1" parent="allow_auto_reconcile.menu_root"/>
+    <menuitem name="Menu 2" id="allow_auto_reconcile.menu_2" parent="allow_auto_reconcile.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="allow_auto_reconcile.menu_1_list" parent="allow_auto_reconcile.menu_1"
+              action="allow_auto_reconcile.action_window"/>
+    <menuitem name="Server to list" id="allow_auto_reconcile" parent="allow_auto_reconcile.menu_2"
+              action="allow_auto_reconcile.action_server"/>
+-->
+  </data>
+</odoo>

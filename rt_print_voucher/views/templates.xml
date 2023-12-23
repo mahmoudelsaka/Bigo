@@ -1,0 +1,57 @@
+<odoo>
+    <data>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="view_account_journal_form" model="ir.ui.view">
+            <field name="name">view.account.journal.form</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//page[@name='advanced_settings']/group/group[6]" position="after">
+                    <!-- Add your fields or attributes here -->
+                    <group name="voucher_receipt_payment_sequence" string="Payment/Receipt Sequence"
+                           attrs="{'invisible': [('type', 'in', ['sale', 'purchase', 'general'])]}">
+                        <field name="payment_sequence_id"
+                               attrs="{'invisible': [('type', 'in', ['sale', 'purchase', 'general'])]}"/>
+                        <field name="receipt_sequence_id"
+                               attrs="{'invisible': [('type', 'in', ['sale', 'purchase', 'general'])]}"/>
+                    </group>
+                </xpath>
+
+            </field>
+        </record>
+
+
+        <record id="view_bank_statement_line_form2" model="ir.ui.view">
+            <field name="name">account.bank.statement.line.tree</field>
+            <field name="model">account.bank.statement.line</field>
+            <field name="inherit_id" ref="account_accountant.view_bank_statement_line_tree_bank_rec_widget"/>
+            <field name="priority">3</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='id']" position="after">
+                    <field name="name2" invisible="1"/>
+                    <button name="action_print_voucher" string="Print Voucher" type="object"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="seq_statement_line_name2" model="ir.sequence">
+            <field name="name">Statement Name2</field>
+            <field name="code">statement.line.name2</field>
+            <field name="prefix">Receipt/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+
+        <record id="seq_statement_line_name3" model="ir.sequence">
+            <field name="name">Statement Name3</field>
+            <field name="code">statement.line.name3</field>
+            <field name="prefix">Payment/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,16 @@
+<odoo>
+  <data>
+    <!-- Inherit Form View to Modify it -->
+    <record id="inherit_chart_account" model="ir.ui.view">
+        <field name="name">account.account.chart</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='accounting']/group/group[1]" position="inside">
+                <field name="show_in_partner_ledger"/>
+            </xpath>
+        </field>
+    </record>
+
+  </data>
+</odoo>

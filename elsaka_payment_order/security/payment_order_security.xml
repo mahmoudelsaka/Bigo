@@ -1,0 +1,41 @@
+<odoo>
+    <data>
+
+        <record model="ir.module.category" id="module_category_elsaka_payment_order">
+            <field name="name">Receipt Order/Payment Order</field>
+            <field name="sequence">100</field>
+        </record>
+
+        <record id="group_ro_po_first_approver" model="res.groups">
+            <field name="name">RO/PO - First Approver</field>
+            <field name="category_id" ref="elsaka_payment_order.module_category_elsaka_payment_order"/>
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record>
+        <record id="group_ro_po_second_approver" model="res.groups">
+            <field name="name">RO/PO - Second Approver</field>
+            <field name="category_id" ref="elsaka_payment_order.module_category_elsaka_payment_order"/>
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record>
+
+        <record id="group_ro_po_approve" model="res.groups">
+            <field name="name">RO/PO - Treasury</field>
+            <field name="category_id" ref="elsaka_payment_order.module_category_elsaka_payment_order"/>
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record>
+
+        <record id="payment_order_user" model="ir.rule">
+            <field name="name">Receipt Order: create uid</field>
+            <field name="model_id" ref="model_receipt_order"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="domain_force">[('create_uid', '=', user.id)]</field>
+        </record>
+
+        <record id="payment_order_first_approve" model="ir.rule">
+            <field name="name">Receipt Order: See ALL</field>
+            <field name="model_id" ref="model_receipt_order"/>
+            <field name="groups" eval="[(4, ref('elsaka_payment_order.group_ro_po_first_approver')),(4, ref('elsaka_payment_order.group_ro_po_second_approver')),(4, ref('elsaka_payment_order.group_ro_po_approve'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+    </data>
+</odoo>

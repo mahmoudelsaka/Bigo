@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem name="Accounting"
+              id="account_accountant.menu_accounting"
+              groups="account.group_account_user,account.group_account_manager,account.group_account_invoice"
+              web_icon="account_accountant,static/description/icon.png"
+              sequence="40"/>
+
+    <record id="view_account_payment_form" model="ir.ui.view">
+        <field name="name">account.payment.form</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="after">
+                <field name="payment_method_ids" invisible="1"/>
+                <field name="journal_ids" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='journal_id']" position="attributes">
+                <attribute name="domain">[('id', 'in', journal_ids)]</attribute>
+            </xpath>
+<!--            <xpath expr="//field[@name='company_id']" position="replace">-->
+<!--                <field name="company_id"/>-->
+<!--            </xpath>-->
+
+<!--            <xpath expr="//field[@name='payment_method_line_id']" position="attributes">-->
+<!--                <attribute name="domain">[('id', 'in', payment_method_ids)]</attribute>-->
+<!--            </xpath>-->
+
+        </field>
+    </record>
+
+    <record id="account.menu_finance_entries" model="ir.ui.menu">
+        <field name="sequence" eval="5"/>
+    </record>
+    <record id="account.menu_finance_reports" model="ir.ui.menu">
+        <field name="sequence" eval="6"/>
+    </record>
+    <menuitem id="rt_account_payment_fix.menu_finance_bank_and_cash"
+              parent="account_accountant.menu_accounting" sequence="4"
+              groups="account.group_account_user,sales_team.group_sale_salesman"
+              name="Bank and Cash"/>
+
+
+    <record id="view_account_payment_tree" model="ir.ui.view">
+        <field name="name">payment.tree.inherit</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_tree"/>
+        <field name="arch" type="xml">
+             <xpath expr="//field[@name='payment_method_line_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='payment_method_line_id']" position="after">
+                <field name="payment_method_description"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

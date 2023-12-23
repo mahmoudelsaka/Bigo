@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="import_account_group.list">
+      <field name="name">import_account_group list</field>
+      <field name="model">import_account_group.import_account_group</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="import_account_group.action_window">
+      <field name="name">import_account_group window</field>
+      <field name="res_model">import_account_group.import_account_group</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="import_account_group.action_server">
+      <field name="name">import_account_group server</field>
+      <field name="model_id" ref="model_import_account_group_import_account_group"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="import_account_group" id="import_account_group.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="import_account_group.menu_1" parent="import_account_group.menu_root"/>
+    <menuitem name="Menu 2" id="import_account_group.menu_2" parent="import_account_group.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="import_account_group.menu_1_list" parent="import_account_group.menu_1"
+              action="import_account_group.action_window"/>
+    <menuitem name="Server to list" id="import_account_group" parent="import_account_group.menu_2"
+              action="import_account_group.action_server"/>
+-->
+  </data>
+</odoo>

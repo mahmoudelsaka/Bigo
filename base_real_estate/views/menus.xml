@@ -1,0 +1,17 @@
+<odoo>
+    <data>
+        <menuitem id="menu_real_state_accounting" name="Real Estate" parent="account.menu_finance_configuration">
+            <menuitem
+                    id="state_building_menu"
+                    name="Phase"
+                    action="base_real_estate.state_building_action"
+                    sequence="1"/>
+
+            <menuitem
+                    id="state_unit_menu"
+                    name="Plots"
+                    action="base_real_estate.state_unit_action"
+                    sequence="2"/>
+        </menuitem>
+    </data>
+</odoo>
